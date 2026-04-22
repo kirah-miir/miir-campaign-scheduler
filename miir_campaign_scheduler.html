@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiiR Launch Campaign Scheduler</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,wght@0,300;0,600;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2EC;
+    --surface: #FFFFFF;
+    --border: #D9D4C8;
+    --text: #1A1714;
+    --muted: #7A746A;
+    --accent: #2A5C45;
+    --accent-light: #E8F2EE;
+    --accent2: #C4622D;
+    --accent2-light: #FAF0EA;
+    --yellow: #E8C44A;
+    --yellow-light: #FDF8E7;
+
+    /* Phase colors */
+    --phase-1: #2A5C45;
+    --phase-2: #4A7FC1;
+    --phase-3: #C4622D;
+    --phase-4: #8B5CF6;
+    --phase-5: #6B7280;
+
+    --row-h: 36px;
+    --header-h: 56px;
+    --label-w: 280px;
+    --col-w: 32px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 13px;
+  }
+
+  /* ─── TOP BAR ─── */
+  .topbar {
+    background: var(--text);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 54px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .topbar-brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.5px;
+  }
+  .topbar-brand span { color: var(--yellow); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 4px; border: 1px solid transparent;
+    font-family: 'DM Mono', monospace; font-size: 12px; cursor: pointer;
+    transition: all .15s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #1e4333; }
+  .btn-ghost { background: transparent; color: var(--bg); border-color: rgba(255,255,255,.25); }
+  .btn-ghost:hover { background: rgba(255,255,255,.1); }
+  .btn-sm { padding: 5px 10px; font-size: 11px; }
+
+  /* ─── LAYOUT ─── */
+  .app { display: flex; height: calc(100vh - 54px); }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    width: 260px; flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 20px 16px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  .sidebar-section label {
+    display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+
+  .sidebar-section input[type="date"],
+  .sidebar-section input[type="text"],
+  .sidebar-section select {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+    border-radius: 4px; background: var(--bg);
+    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text);
+  }
+  .sidebar-section input:focus, .sidebar-section select:focus {
+    outline: none; border-color: var(--accent);
+  }
+
+  .campaign-type-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px;
+  }
+  .type-btn {
+    padding: 7px 6px; border: 1px solid var(--border); border-radius: 4px;
+    background: var(--bg); font-family: 'DM Mono', monospace; font-size: 10px;
+    cursor: pointer; text-align: center; transition: all .15s;
+  }
+  .type-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .team-list { display: flex; flex-direction: column; gap: 4px; }
+  .team-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 8px; border-radius: 4px; cursor: pointer;
+    transition: background .12s;
+  }
+  .team-item:hover { background: var(--bg); }
+  .team-item.active { background: var(--accent-light); }
+  .avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 500; color: #fff; flex-shrink: 0;
+  }
+  .team-item span { font-size: 11px; }
+
+  .legend { display: flex; flex-direction: column; gap: 5px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ─── MAIN ─── */
+  .main { flex: 1; overflow: auto; display: flex; flex-direction: column; }
+
+  /* ─── GANTT TOOLBAR ─── */
+  .gantt-toolbar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 10px 20px; display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; z-index: 50; flex-shrink: 0;
+  }
+  .gantt-toolbar h2 {
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px;
+    flex: 1;
+  }
+  .gantt-toolbar h2 .subtitle { font-size: 11px; color: var(--muted); font-weight: 300; margin-left: 8px; }
+  .zoom-btns { display: flex; gap: 4px; }
+  .zoom-btn {
+    padding: 4px 8px; border: 1px solid var(--border); border-radius: 3px;
+    background: var(--bg); font-family: 'DM Mono', monospace; font-size: 11px;
+    cursor: pointer;
+  }
+  .zoom-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+  /* ─── GANTT CONTAINER ─── */
+  .gantt-wrap { flex: 1; overflow: auto; position: relative; }
+  .gantt-grid { display: flex; }
+
+  /* ─── TASK LABELS ─── */
+  .gantt-labels {
+    width: var(--label-w); flex-shrink: 0;
+    position: sticky; left: 0; z-index: 30;
+    background: var(--surface);
+    border-right: 2px solid var(--border);
+  }
+
+  .label-header {
+    height: var(--header-h); background: var(--text); color: var(--bg);
+    display: flex; align-items: center; padding: 0 14px;
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    position: sticky; top: 0; z-index: 40;
+    border-right: 2px solid var(--border);
+  }
+
+  .phase-group { }
+  .phase-header {
+    height: 30px; display: flex; align-items: center; padding: 0 14px;
+    font-size: 10px; letter-spacing: .05em; font-weight: 500;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    border-top: 2px solid var(--border); cursor: pointer;
+    user-select: none;
+    position: sticky; left: 0;
+  }
+  .phase-header .phase-dot {
+    width: 8px; height: 8px; border-radius: 2px; margin-right: 8px; flex-shrink: 0;
+  }
+  .phase-header .collapse-icon { margin-left: auto; color: var(--muted); font-size: 10px; }
+
+  .task-label-row {
+    height: var(--row-h); display: flex; align-items: center;
+    padding: 0 14px 0 28px;
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+    cursor: pointer; transition: background .1s;
+  }
+  .task-label-row:hover { background: var(--accent-light); }
+  .task-label-row .task-name { flex: 1; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .task-label-row .owner-chip {
+    font-size: 9px; padding: 2px 5px; border-radius: 10px;
+    background: var(--bg); border: 1px solid var(--border); white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* ─── GANTT CHART ─── */
+  .gantt-chart { flex: 1; min-width: 0; }
+
+  .gantt-header-row {
+    height: var(--header-h); display: flex; align-items: flex-end;
+    background: var(--text); color: var(--bg);
+    position: sticky; top: 0; z-index: 20; padding-bottom: 6px;
+  }
+
+  .gantt-month-label {
+    font-size: 9px; letter-spacing: .06em; text-transform: uppercase;
+    padding-left: 6px; color: rgba(255,255,255,.6);
+    border-left: 1px solid rgba(255,255,255,.15);
+    flex-shrink: 0;
+  }
+
+  .gantt-week-labels {
+    display: flex; position: absolute; bottom: 0; left: 0;
+  }
+  .gantt-week-label {
+    font-size: 9px; color: rgba(255,255,255,.35);
+    width: var(--col-w); text-align: center; flex-shrink: 0;
+  }
+
+  .gantt-row {
+    height: var(--row-h); display: flex; align-items: center;
+    border-bottom: 1px solid var(--border); position: relative;
+  }
+  .gantt-row:hover .gantt-row-bg { background: rgba(42,92,69,.04); }
+  .gantt-row-bg { position: absolute; inset: 0; pointer-events: none; }
+
+  .gantt-cell {
+    width: var(--col-w); height: 100%; flex-shrink: 0;
+    border-right: 1px solid transparent; position: relative;
+  }
+  .gantt-cell.weekend { background: rgba(0,0,0,.02); }
+  .gantt-cell.today-col { background: rgba(196,98,45,.06); border-right: 1px solid rgba(196,98,45,.3); }
+
+  .phase-row-bg { height: 30px; display: flex; }
+  .phase-cell { width: var(--col-w); height: 100%; flex-shrink: 0; border-right: 1px solid var(--border); }
+
+  /* ─── TASK BARS ─── */
+  .task-bar {
+    position: absolute; top: 5px; height: 26px; border-radius: 3px;
+    display: flex; align-items: center; padding: 0 8px;
+    font-size: 10px; color: #fff; white-space: nowrap; overflow: hidden;
+    cursor: pointer; transition: filter .15s, transform .1s;
+    z-index: 5;
+  }
+  .task-bar:hover { filter: brightness(1.12); transform: translateY(-1px); }
+  .task-bar.milestone {
+    width: 20px !important; left: calc(var(--bar-left) + var(--col-w)/2 - 10px) !important;
+    background: var(--yellow) !important; border-radius: 50%;
+    padding: 0; justify-content: center; color: var(--text);
+  }
+
+  /* ─── PHASE SECTION ROWS ─── */
+  .phase-section-gantt {
+    display: flex; height: 30px; background: var(--bg);
+    border-bottom: 1px solid var(--border); border-top: 2px solid var(--border);
+    position: relative;
+  }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(26,23,20,.5); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border-radius: 8px; width: 480px; max-width: 95vw;
+    padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal h3 { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; margin-bottom: 4px; }
+  .modal .modal-sub { color: var(--muted); font-size: 11px; margin-bottom: 20px; }
+  .modal-field { margin-bottom: 14px; }
+  .modal-field label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); margin-bottom: 5px; }
+  .modal-field input, .modal-field select, .modal-field textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+    border-radius: 4px; background: var(--bg); font-family: 'DM Mono', monospace;
+    font-size: 12px; color: var(--text); resize: vertical;
+  }
+  .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus {
+    outline: none; border-color: var(--accent);
+  }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; }
+  .btn-danger { background: #dc2626; color: #fff; }
+  .btn-outline { background: transparent; border-color: var(--border); color: var(--text); }
+
+  /* ─── STATUS PILL ─── */
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 8px; border-radius: 10px; font-size: 10px;
+  }
+
+  /* ─── TODAY LINE ─── */
+  .today-line {
+    position: absolute; top: 0; bottom: 0; width: 2px;
+    background: var(--accent2); z-index: 15; pointer-events: none;
+  }
+  .today-label {
+    position: absolute; top: 4px; font-size: 9px;
+    background: var(--accent2); color: #fff; padding: 2px 4px; border-radius: 2px;
+    white-space: nowrap; transform: translateX(-50%);
+  }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    padding: 60px 20px; text-align: center; color: var(--muted);
+  }
+  .empty-state .big { font-size: 32px; margin-bottom: 12px; }
+  .empty-state p { font-size: 12px; line-height: 1.7; }
+
+  /* ─── ADD TASK BTN ─── */
+  .add-task-row {
+    height: var(--row-h); display: flex; align-items: center; padding: 0 14px 0 28px;
+    border-bottom: 1px solid var(--border); cursor: pointer; color: var(--muted);
+    font-size: 11px; gap: 6px; transition: background .1s;
+  }
+  .add-task-row:hover { background: var(--accent-light); color: var(--accent); }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* ─── NOTICE ─── */
+  .notice {
+    background: var(--yellow-light); border: 1px solid var(--yellow);
+    border-radius: 4px; padding: 10px 14px; font-size: 11px; line-height: 1.6;
+    color: #6b5900;
+  }
+
+  .tag { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">MiiR <span>◆</span> Launch Scheduler</div>
+  <div class="topbar-right">
+    <select id="campaignSelect" style="background:#2a2724;color:#f5f2ec;border:1px solid #444;padding:6px 10px;border-radius:4px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer;">
+      <option value="">+ New Campaign</option>
+    </select>
+    <button class="btn btn-ghost btn-sm" onclick="exportCSV()">↓ Export</button>
+    <button class="btn btn-primary btn-sm" onclick="openNewCampaignModal()">+ New Campaign</button>
+  </div>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="notice">
+        Set a <strong>launch date</strong> and all task deadlines auto-calculate from your team's past launch patterns.
+      </div>
+    </div>
+
+    <div class="sidebar-section" id="campaignInfoSection" style="display:none">
+      <label>Campaign Name</label>
+      <div id="sidebarCampaignName" style="font-family:'Fraunces',serif;font-weight:600;font-size:14px;margin-bottom:12px;"></div>
+      <label>Launch Date</label>
+      <input type="date" id="launchDateInput" onchange="recalcDates()">
+      <div style="margin-top:8px;font-size:11px;color:var(--muted)" id="campaignSpan"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <label>Filter by Owner</label>
+      <div class="team-list" id="teamList">
+        <div class="team-item active" data-owner="all" onclick="filterOwner('all', this)">
+          <div class="avatar" style="background:var(--text)">ALL</div>
+          <span>All team members</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <label>Phase Legend</label>
+      <div class="legend" id="phaseLegend"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <label>Status Key</label>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#22c55e"></div> Done</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> In Progress</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> In Review / Edits</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e5e7eb"></div> Not Started</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> Overdue / Blocked</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main" id="mainArea">
+    <div class="empty-state">
+      <div class="big">🚀</div>
+      <p>Create a new campaign to get started.<br>Your team's launch template is ready to go.</p>
+      <br>
+      <button class="btn btn-primary" onclick="openNewCampaignModal()">+ New Campaign</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW CAMPAIGN MODAL -->
+<div class="modal-overlay" id="newCampaignModal">
+  <div class="modal">
+    <h3>New Launch Campaign</h3>
+    <p class="modal-sub">We'll auto-populate tasks based on your team's past launches.</p>
+    <div class="modal-field">
+      <label>Campaign Name</label>
+      <input type="text" id="ncName" placeholder="e.g. NPD: Alpine Flask Q2.26">
+    </div>
+    <div class="modal-field">
+      <label>Campaign Type</label>
+      <div class="campaign-type-grid">
+        <button class="type-btn active" data-type="NPD" onclick="selectType(this)">NPD<br><span style="font-size:9px;opacity:.7">New Product</span></button>
+        <button class="type-btn" data-type="LTO" onclick="selectType(this)">LTO<br><span style="font-size:9px;opacity:.7">Limited Time</span></button>
+        <button class="type-btn" data-type="Seasonal" onclick="selectType(this)">Seasonal<br><span style="font-size:9px;opacity:.7">Colors</span></button>
+        <button class="type-btn" data-type="Collab" onclick="selectType(this)">Collab<br><span style="font-size:9px;opacity:.7">Partnership</span></button>
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Launch Date</label>
+      <input type="date" id="ncLaunchDate">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('newCampaignModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="createCampaign()">Create Campaign →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TASK EDIT MODAL -->
+<div class="modal-overlay" id="taskModal">
+  <div class="modal">
+    <h3 id="taskModalTitle">Edit Task</h3>
+    <p class="modal-sub" id="taskModalPhase"></p>
+    <div class="modal-field">
+      <label>Task Name</label>
+      <input type="text" id="tmName">
+    </div>
+    <div class="modal-field">
+      <label>Owner</label>
+      <select id="tmOwner">
+        <option value="">Unassigned</option>
+      </select>
+    </div>
+    <div class="modal-field" style="display:flex;gap:10px">
+      <div style="flex:1">
+        <label>Start Date</label>
+        <input type="date" id="tmStart">
+      </div>
+      <div style="flex:1">
+        <label>Due Date</label>
+        <input type="date" id="tmDue">
+      </div>
+    </div>
+    <div class="modal-field">
+      <label>Status</label>
+      <select id="tmStatus">
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="In Review">In Review</option>
+        <option value="Edits">Edits</option>
+        <option value="Done">Done</option>
+        <option value="Overdue">Overdue</option>
+        <option value="On Hold">On Hold / Blocked</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Content Channel(s)</label>
+      <input type="text" id="tmChannels" placeholder="e.g. MiiR.com, Email D2C, SMS">
+    </div>
+    <div class="modal-field">
+      <label>Notes</label>
+      <textarea id="tmNotes" rows="3" placeholder="Add context, links, or dependencies..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-danger btn-sm" onclick="deleteTask()">Delete</button>
+      <button class="btn btn-outline" onclick="closeModal('taskModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTask()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const TEAM = [
+  { name: 'Kirah Ingram',    initials: 'KI', color: '#2A5C45' },
+  { name: 'Ashley Hanson',   initials: 'AH', color: '#4A7FC1' },
+  { name: 'Tory Musser',     initials: 'TM', color: '#C4622D' },
+  { name: 'Lindell Serrin',  initials: 'LS', color: '#8B5CF6' },
+  { name: 'Amy Olive',       initials: 'AO', color: '#0891B2' },
+  { name: 'Jake McGrath',    initials: 'JM', color: '#D97706' },
+  { name: 'Amy Beasley',     initials: 'AB', color: '#BE185D' },
+  { name: 'Godwin Peck',     initials: 'GP', color: '#059669' },
+  { name: 'Kristin Lynch',   initials: 'KL', color: '#7C3AED' },
+  { name: 'Ashley Wilbur',   initials: 'AW', color: '#DC2626' },
+  { name: 'Mike Brady',      initials: 'MB', color: '#475569' },
+  { name: 'Max McEwan',      initials: 'MM', color: '#B45309' },
+];
+
+const PHASES = [
+  { id: 'strategy',    label: 'Pre-Launch: Strategy & Brief',   color: '#2A5C45', short: 'Strategy'   },
+  { id: 'creative',    label: 'Creative Production',             color: '#4A7FC1', short: 'Creative'   },
+  { id: 'approvals',   label: 'Stakeholder Review & Approvals',  color: '#C4622D', short: 'Approvals'  },
+  { id: 'golive',      label: 'Go-Live / Launch Day',            color: '#8B5CF6', short: 'Launch'     },
+  { id: 'postlaunch',  label: 'Post-Launch Reporting',           color: '#6B7280', short: 'Post-Launch'},
+];
+
+// Default task template (offsets in days relative to launch date; negative = before launch)
+const TASK_TEMPLATES = {
+  NPD: [
+    // Strategy
+    { phase:'strategy', name:'Kickoff meeting + brief creation',           owner:'Kirah Ingram',   startOff:-120, dueOff:-112, status:'Not Started' },
+    { phase:'strategy', name:'Campaign brief Draft 1 in Coda',             owner:'Kirah Ingram',   startOff:-112, dueOff:-105, status:'Not Started' },
+    { phase:'strategy', name:'Campaign brief stakeholder alignment (C-BAM)',owner:'Kirah Ingram',   startOff:-105, dueOff:-98,  status:'Not Started' },
+    { phase:'strategy', name:'Shopify / Acumatica product setup',          owner:'Jake McGrath',   startOff:-100, dueOff:-84,  status:'Not Started' },
+    { phase:'strategy', name:'Key messaging doc created',                  owner:'Ashley Hanson',  startOff:-98,  dueOff:-84,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Brand moodboard finalized',                  owner:'Tory Musser',    startOff:-90,  dueOff:-80,  status:'Not Started', milestone:true },
+    // Creative
+    { phase:'creative', name:'Copywriter RD1 — campaign copy',             owner:'Ashley Hanson',  startOff:-84,  dueOff:-70,  status:'Not Started' },
+    { phase:'creative', name:'Graphic assets RD1 — social + paid',         owner:'Tory Musser',    startOff:-84,  dueOff:-63,  status:'Not Started' },
+    { phase:'creative', name:'Photography / lifestyle shoot',              owner:'Amy Beasley',    startOff:-77,  dueOff:-56,  status:'Not Started' },
+    { phase:'creative', name:'Video content production',                   owner:'Lindell Serrin', startOff:-70,  dueOff:-49,  status:'Not Started' },
+    { phase:'creative', name:'Print assets (inserts, packaging)',          owner:'Tory Musser',    startOff:-56,  dueOff:-42,  status:'Not Started' },
+    { phase:'creative', name:'Social + paid graphic asset handoff',        owner:'Tory Musser',    startOff:-42,  dueOff:-35,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'SMS + LinkedIn graphic asset handoff',       owner:'Ashley Hanson',  startOff:-35,  dueOff:-28,  status:'Not Started', milestone:true },
+    // Approvals
+    { phase:'approvals', name:'Copy RD1 internal review (MiiR)',           owner:'Kirah Ingram',   startOff:-70,  dueOff:-63,  status:'Not Started' },
+    { phase:'approvals', name:'Creative concept + direction finalized',    owner:'Kirah Ingram',   startOff:-63,  dueOff:-56,  status:'Not Started', milestone:true },
+    { phase:'approvals', name:'Final copy approval (all channels)',        owner:'Kirah Ingram',   startOff:-35,  dueOff:-28,  status:'Not Started', milestone:true },
+    { phase:'approvals', name:'Final creative + imagery approval',         owner:'Kirah Ingram',   startOff:-28,  dueOff:-21,  status:'Not Started' },
+    { phase:'approvals', name:'PDP + landing page RTS review',             owner:'Jake McGrath',   startOff:-21,  dueOff:-14,  status:'Not Started' },
+    { phase:'approvals', name:'Email + SMS content final approval',        owner:'Ashley Hanson',  startOff:-14,  dueOff:-7,   status:'Not Started' },
+    // Go-Live
+    { phase:'golive',   name:'MiiR.com PDP go-live',                       owner:'Jake McGrath',   startOff:-1,   dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'MiiR.com homepage + landing page go-live',   owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Email D2C launch send (Klaviyo)',             owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Email B2B launch send (HubSpot)',             owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'SMS launch send',                             owner:'Godwin Peck',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Organic social posts go live (IG)',           owner:'Amy Olive',      startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Paid Meta campaign launch',                  owner:'Mike Brady',     startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'72-hr early access / VIP SMS',               owner:'Godwin Peck',    startOff:-3,   dueOff:-3,   status:'Not Started' },
+    // Post-launch
+    { phase:'postlaunch', name:'Post-purchase email flow active',          owner:'Ashley Hanson',  startOff:2,    dueOff:7,    status:'Not Started' },
+    { phase:'postlaunch', name:'Review launch KPIs (week 1)',              owner:'Kirah Ingram',   startOff:7,    dueOff:14,   status:'Not Started' },
+    { phase:'postlaunch', name:'Performance / paid campaign review',       owner:'Mike Brady',     startOff:7,    dueOff:21,   status:'Not Started' },
+    { phase:'postlaunch', name:'Campaign retrospective',                   owner:'Kirah Ingram',   startOff:21,   dueOff:30,   status:'Not Started', milestone:true },
+    { phase:'postlaunch', name:'Final KPI report + learnings doc',         owner:'Kirah Ingram',   startOff:28,   dueOff:42,   status:'Not Started' },
+  ],
+};
+// LTO / Seasonal / Collab use same template with minor label differences
+TASK_TEMPLATES.LTO = TASK_TEMPLATES.NPD.map(t => ({...t}));
+TASK_TEMPLATES.Seasonal = TASK_TEMPLATES.NPD.map(t => ({...t}));
+TASK_TEMPLATES.Collab = TASK_TEMPLATES.NPD.map(t => ({...t}));
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let campaigns = [];
+let activeCampaign = null;
+let activeOwnerFilter = 'all';
+let editingTaskId = null;
+let collapseState = {}; // phaseId → bool
+let zoomLevel = 'week'; // week | month
+
+// ─── UTILS ─────────────────────────────────────────────────────────────────
+function dateStr(d) {
+  if (!d) return '';
+  const dt = d instanceof Date ? d : new Date(d);
+  return dt.toISOString().split('T')[0];
+}
+function addDays(dateStr, days) {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + days);
+  return dateStr(d);
+}
+function daysBetween(a, b) {
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+function uid() { return Math.random().toString(36).slice(2, 9); }
+
+const STATUS_COLORS = {
+  'Done':        '#22c55e',
+  'In Progress': '#3b82f6',
+  'In Review':   '#f59e0b',
+  'Edits':       '#f59e0b',
+  'Not Started': '#d1d5db',
+  'Overdue':     '#ef4444',
+  'On Hold':     '#ef4444',
+  'Descoped':    '#9ca3af',
+  '✏️':          '#3b82f6',
+};
+
+function statusColor(s) { return STATUS_COLORS[s] || '#d1d5db'; }
+
+// ─── TEAM SIDEBAR ──────────────────────────────────────────────────────────
+function buildTeamList() {
+  const list = document.getElementById('teamList');
+  list.innerHTML = `<div class="team-item active" data-owner="all" onclick="filterOwner('all', this)">
+    <div class="avatar" style="background:var(--text)">ALL</div><span>All team members</span></div>`;
+  TEAM.forEach(m => {
+    list.innerHTML += `<div class="team-item" data-owner="${m.name}" onclick="filterOwner('${m.name}', this)">
+      <div class="avatar" style="background:${m.color}">${m.initials}</div>
+      <span>${m.name}</span></div>`;
+  });
+  const legend = document.getElementById('phaseLegend');
+  legend.innerHTML = PHASES.map(p =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${p.color}"></div>${p.short}</div>`
+  ).join('');
+}
+
+function filterOwner(owner, el) {
+  activeOwnerFilter = owner;
+  document.querySelectorAll('.team-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  renderGantt();
+}
+
+// ─── MODALS ────────────────────────────────────────────────────────────────
+function openNewCampaignModal() {
+  const d = new Date(); d.setMonth(d.getMonth() + 3);
+  document.getElementById('ncLaunchDate').value = dateStr(d);
+  document.getElementById('ncName').value = '';
+  document.getElementById('newCampaignModal').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function createCampaign() {
+  const name = document.getElementById('ncName').value.trim();
+  const launchDate = document.getElementById('ncLaunchDate').value;
+  const type = document.querySelector('.type-btn.active')?.dataset.type || 'NPD';
+  if (!name || !launchDate) { alert('Please fill in the campaign name and launch date.'); return; }
+
+  const tasks = (TASK_TEMPLATES[type] || TASK_TEMPLATES.NPD).map(t => ({
+    id: uid(),
+    ...t,
+    startDate: addDays(launchDate, t.startOff),
+    dueDate:   addDays(launchDate, t.dueOff),
+    channels: '',
+    notes: '',
+  }));
+
+  const campaign = { id: uid(), name, type, launchDate, tasks };
+  campaigns.push(campaign);
+  activeCampaign = campaign;
+
+  // Update select
+  const sel = document.getElementById('campaignSelect');
+  const opt = document.createElement('option');
+  opt.value = campaign.id; opt.textContent = name; opt.selected = true;
+  sel.appendChild(opt);
+
+  closeModal('newCampaignModal');
+  updateSidebar();
+  renderGantt();
+}
+
+// ─── SIDEBAR UPDATE ────────────────────────────────────────────────────────
+function updateSidebar() {
+  const sec = document.getElementById('campaignInfoSection');
+  if (!activeCampaign) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  document.getElementById('sidebarCampaignName').textContent = activeCampaign.name;
+  document.getElementById('launchDateInput').value = activeCampaign.launchDate;
+
+  const tasks = activeCampaign.tasks;
+  const dates = tasks.map(t => t.startDate).filter(Boolean).sort();
+  const span = dates.length > 0
+    ? `${daysBetween(dates[0], activeCampaign.launchDate)} days pre-launch runway`
+    : '';
+  document.getElementById('campaignSpan').textContent = span;
+}
+
+function recalcDates() {
+  if (!activeCampaign) return;
+  const newLaunch = document.getElementById('launchDateInput').value;
+  activeCampaign.launchDate = newLaunch;
+  const tpl = TASK_TEMPLATES[activeCampaign.type] || TASK_TEMPLATES.NPD;
+  activeCampaign.tasks.forEach((task, i) => {
+    const t = tpl[i];
+    if (t) {
+      task.startDate = addDays(newLaunch, t.startOff);
+      task.dueDate   = addDays(newLaunch, t.dueOff);
+    }
+  });
+  updateSidebar();
+  renderGantt();
+}
+
+// ─── GANTT RENDER ──────────────────────────────────────────────────────────
+function renderGantt() {
+  const main = document.getElementById('mainArea');
+  if (!activeCampaign) {
+    main.innerHTML = `<div class="empty-state"><div class="big">🚀</div>
+      <p>Create a new campaign to get started.<br>Your team's launch template is ready to go.</p>
+      <br><button class="btn btn-primary" onclick="openNewCampaignModal()">+ New Campaign</button></div>`;
+    return;
+  }
+
+  const tasks = activeCampaign.tasks.filter(t =>
+    activeOwnerFilter === 'all' || t.owner === activeOwnerFilter
+  );
+
+  // Compute date range
+  const allDates = tasks.flatMap(t => [t.startDate, t.dueDate]).filter(Boolean).sort();
+  if (!allDates.length) return;
+  const rangeStart = allDates[0] < addDays(activeCampaign.launchDate, -130)
+    ? allDates[0] : addDays(activeCampaign.launchDate, -130);
+  const rangeEnd   = addDays(activeCampaign.launchDate, 50);
+
+  const totalDays  = daysBetween(rangeStart, rangeEnd);
+  const COL_W      = zoomLevel === 'month' ? 16 : 32;
+  const totalWidth = totalDays * COL_W;
+
+  const today = dateStr(new Date());
+  const todayOff = daysBetween(rangeStart, today);
+
+  // Build month labels
+  let months = [];
+  let cursor = new Date(rangeStart);
+  const end   = new Date(rangeEnd);
+  while (cursor <= end) {
+    const monthStart = dateStr(cursor);
+    const off = daysBetween(rangeStart, monthStart);
+    months.push({ label: cursor.toLocaleString('default', {month:'short', year:'2-digit'}), off });
+    cursor.setMonth(cursor.getMonth() + 1);
+    cursor.setDate(1);
+  }
+
+  // ── HTML ──
+  let html = `
+  <div class="gantt-toolbar">
+    <h2>${activeCampaign.name} <span class="subtitle">Launch: ${activeCampaign.launchDate}</span></h2>
+    <div class="zoom-btns">
+      <button class="zoom-btn ${zoomLevel==='week'?'active':''}" onclick="setZoom('week')">Week</button>
+      <button class="zoom-btn ${zoomLevel==='month'?'active':''}" onclick="setZoom('month')">Month</button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openAddTaskModal()">+ Task</button>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-grid" style="min-width:${totalWidth + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--label-w').trim())}px">`;
+
+  // Labels column
+  html += `<div class="gantt-labels">
+    <div class="label-header">Task</div>`;
+
+  PHASES.forEach(phase => {
+    const phaseTasks = tasks.filter(t => t.phase === phase.id);
+    const collapsed = collapseState[phase.id];
+    html += `<div class="phase-group">
+      <div class="phase-header" onclick="togglePhase('${phase.id}')">
+        <div class="phase-dot" style="background:${phase.color}"></div>
+        ${phase.label}
+        <span class="collapse-icon">${collapsed ? '▶' : '▼'}</span>
+      </div>`;
+    if (!collapsed) {
+      phaseTasks.forEach(task => {
+        const owner = TEAM.find(m => m.name === task.owner);
+        html += `<div class="task-label-row" onclick="openTaskModal('${task.id}')">
+          <div class="status-dot" style="background:${statusColor(task.status)}"></div>
+          <span class="task-name" title="${task.name}">${task.milestone ? '◆ ' : ''}${task.name}</span>
+          ${owner ? `<span class="owner-chip" style="border-color:${owner.color};color:${owner.color}">${owner.initials}</span>` : ''}
+        </div>`;
+      });
+      html += `<div class="add-task-row" onclick="openAddTaskModal('${phase.id}')">+ Add task to ${phase.short}</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`; // end gantt-labels
+
+  // Chart column
+  html += `<div class="gantt-chart" style="width:${totalWidth}px;position:relative">`;
+
+  // Header with month/day labels
+  html += `<div class="gantt-header-row" style="width:${totalWidth}px;position:relative">`;
+  months.forEach((m, i) => {
+    const nextOff = i + 1 < months.length ? months[i+1].off : totalDays;
+    html += `<div class="gantt-month-label" style="position:absolute;left:${m.off*COL_W}px;width:${(nextOff-m.off)*COL_W}px">${m.label}</div>`;
+  });
+  html += `</div>`;
+
+  // Today line
+  if (todayOff >= 0 && todayOff <= totalDays) {
+    html += `<div class="today-line" style="left:${todayOff * COL_W}px">
+      <div class="today-label" style="left:50%">Today</div></div>`;
+  }
+
+  // Launch day line
+  const launchOff = daysBetween(rangeStart, activeCampaign.launchDate);
+  html += `<div class="today-line" style="left:${launchOff*COL_W}px;background:#8B5CF6;width:2px">
+    <div class="today-label" style="left:50%;background:#8B5CF6">🚀 Launch</div></div>`;
+
+  // Phase rows + task bars
+  PHASES.forEach(phase => {
+    const phaseTasks = tasks.filter(t => t.phase === phase.id);
+    const collapsed = collapseState[phase.id];
+
+    // Phase header row
+    html += `<div class="phase-section-gantt">`;
+    for (let d = 0; d < totalDays; d++) {
+      html += `<div class="phase-cell" style="width:${COL_W}px"></div>`;
+    }
+    html += `</div>`;
+
+    if (!collapsed) {
+      phaseTasks.forEach(task => {
+        html += `<div class="gantt-row" style="position:relative;height:var(--row-h)">`;
+        // Background cells
+        for (let d = 0; d < totalDays; d++) {
+          const dayDate = addDays(rangeStart, d);
+          const dow = new Date(dayDate).getDay();
+          const isWeekend = dow === 0 || dow === 6;
+          const isToday = dayDate === today;
+          html += `<div class="gantt-cell${isWeekend?' weekend':''}${isToday?' today-col':''}" style="width:${COL_W}px"></div>`;
+        }
+        // Task bar
+        if (task.startDate && task.dueDate) {
+          const barStart = daysBetween(rangeStart, task.startDate);
+          const barDur   = Math.max(1, daysBetween(task.startDate, task.dueDate));
+          const barW     = barDur * COL_W;
+          const barL     = barStart * COL_W;
+          const phaseColor = PHASES.find(p => p.id === task.phase)?.color || '#888';
+          const label = barDur > 5 ? task.name : '';
+          if (task.milestone) {
+            html += `<div class="task-bar milestone" style="left:${barL+COL_W/2-10}px;background:var(--yellow)" onclick="openTaskModal('${task.id}')">◆</div>`;
+          } else {
+            html += `<div class="task-bar" style="left:${barL}px;width:${barW}px;background:${phaseColor};opacity:${task.status==='Done'?0.5:1}" onclick="openTaskModal('${task.id}')">${label}</div>`;
+          }
+        }
+        html += `</div>`;
+      });
+      // Add task row
+      html += `<div class="gantt-row" style="height:var(--row-h)">`;
+      for (let d = 0; d < totalDays; d++) html += `<div class="gantt-cell" style="width:${COL_W}px"></div>`;
+      html += `</div>`;
+    }
+  });
+
+  html += `</div></div></div>`; // end chart, grid, wrap
+
+  main.innerHTML = html;
+  updateSidebar();
+}
+
+function setZoom(level) { zoomLevel = level; renderGantt(); }
+function togglePhase(id) { collapseState[id] = !collapseState[id]; renderGantt(); }
+
+// ─── TASK MODAL ────────────────────────────────────────────────────────────
+function populateOwnerDropdown(selectId, selectedOwner) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = '<option value="">Unassigned</option>';
+  TEAM.forEach(m => {
+    sel.innerHTML += `<option value="${m.name}" ${m.name === selectedOwner ? 'selected' : ''}>${m.name}</option>`;
+  });
+}
+
+function openTaskModal(taskId) {
+  if (!activeCampaign) return;
+  const task = activeCampaign.tasks.find(t => t.id === taskId);
+  if (!task) return;
+  editingTaskId = taskId;
+  const phase = PHASES.find(p => p.id === task.phase);
+  document.getElementById('taskModalTitle').textContent = task.name;
+  document.getElementById('taskModalPhase').textContent = phase?.label || '';
+  document.getElementById('tmName').value = task.name;
+  document.getElementById('tmStart').value = task.startDate || '';
+  document.getElementById('tmDue').value = task.dueDate || '';
+  document.getElementById('tmStatus').value = task.status || 'Not Started';
+  document.getElementById('tmChannels').value = task.channels || '';
+  document.getElementById('tmNotes').value = task.notes || '';
+  populateOwnerDropdown('tmOwner', task.owner);
+  document.getElementById('taskModal').classList.add('open');
+}
+
+function openAddTaskModal(phaseId) {
+  if (!activeCampaign) return;
+  editingTaskId = null;
+  document.getElementById('taskModalTitle').textContent = 'New Task';
+  const phase = PHASES.find(p => p.id === phaseId) || PHASES[0];
+  document.getElementById('taskModalPhase').textContent = phase.label;
+  document.getElementById('tmName').value = '';
+  document.getElementById('tmStart').value = activeCampaign.launchDate;
+  document.getElementById('tmDue').value = activeCampaign.launchDate;
+  document.getElementById('tmStatus').value = 'Not Started';
+  document.getElementById('tmChannels').value = '';
+  document.getElementById('tmNotes').value = '';
+  populateOwnerDropdown('tmOwner', '');
+  document.getElementById('taskModal')._addPhase = phaseId || 'strategy';
+  document.getElementById('taskModal').classList.add('open');
+}
+
+function saveTask() {
+  if (!activeCampaign) return;
+  if (editingTaskId) {
+    const task = activeCampaign.tasks.find(t => t.id === editingTaskId);
+    if (task) {
+      task.name      = document.getElementById('tmName').value;
+      task.owner     = document.getElementById('tmOwner').value;
+      task.startDate = document.getElementById('tmStart').value;
+      task.dueDate   = document.getElementById('tmDue').value;
+      task.status    = document.getElementById('tmStatus').value;
+      task.channels  = document.getElementById('tmChannels').value;
+      task.notes     = document.getElementById('tmNotes').value;
+    }
+  } else {
+    const phaseId = document.getElementById('taskModal')._addPhase || 'strategy';
+    activeCampaign.tasks.push({
+      id: uid(), phase: phaseId,
+      name:      document.getElementById('tmName').value,
+      owner:     document.getElementById('tmOwner').value,
+      startDate: document.getElementById('tmStart').value,
+      dueDate:   document.getElementById('tmDue').value,
+      status:    document.getElementById('tmStatus').value,
+      channels:  document.getElementById('tmChannels').value,
+      notes:     document.getElementById('tmNotes').value,
+      startOff: 0, dueOff: 0,
+    });
+  }
+  closeModal('taskModal');
+  renderGantt();
+}
+
+function deleteTask() {
+  if (!editingTaskId || !activeCampaign) return;
+  if (!confirm('Delete this task?')) return;
+  activeCampaign.tasks = activeCampaign.tasks.filter(t => t.id !== editingTaskId);
+  closeModal('taskModal');
+  renderGantt();
+}
+
+// ─── CAMPAIGN SELECT ───────────────────────────────────────────────────────
+document.getElementById('campaignSelect').addEventListener('change', function() {
+  const id = this.value;
+  activeCampaign = campaigns.find(c => c.id === id) || null;
+  updateSidebar();
+  renderGantt();
+});
+
+// ─── EXPORT ────────────────────────────────────────────────────────────────
+function exportCSV() {
+  if (!activeCampaign) return;
+  const rows = [['Task','Phase','Owner','Start Date','Due Date','Status','Channels','Notes']];
+  activeCampaign.tasks.forEach(t => {
+    const phase = PHASES.find(p => p.id === t.phase)?.label || t.phase;
+    rows.push([t.name, phase, t.owner||'', t.startDate||'', t.dueDate||'', t.status||'', t.channels||'', t.notes||'']);
+  });
+  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = activeCampaign.name.replace(/\s+/g,'_') + '_schedule.csv';
+  a.click();
+}
+
+// ─── CLOSE MODALS ON OVERLAY CLICK ────────────────────────────────────────
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+buildTeamList();
+renderGantt();
+</script>
+</body>
+</html>
