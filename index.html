@@ -502,13 +502,14 @@
 // ─── DATA ───────────────────────────────────────────────────────────────────
 
 const TEAM = [
+  { name: 'Amy Olive',       initials: 'AO', color: '#0891B2' },
   { name: 'Kirah Ingram',    initials: 'KI', color: '#2A5C45' },
+  { name: 'Lindell Serrin',  initials: 'LS', color: '#8B5CF6' },
   { name: 'Ashley Hanson',   initials: 'AH', color: '#4A7FC1' },
   { name: 'Tory Musser',     initials: 'TM', color: '#C4622D' },
-  { name: 'Lindell Serrin',  initials: 'LS', color: '#8B5CF6' },
-  { name: 'Amy Olive',       initials: 'AO', color: '#0891B2' },
-  { name: 'Jake McGrath',    initials: 'JM', color: '#D97706' },
+  { name: 'Nic Tecson',      initials: 'NT', color: '#F59E0B' },
   { name: 'Amy Beasley',     initials: 'AB', color: '#BE185D' },
+  { name: 'Jake McGrath',    initials: 'JM', color: '#D97706' },
   { name: 'Godwin Peck',     initials: 'GP', color: '#059669' },
   { name: 'Kristin Lynch',   initials: 'KL', color: '#7C3AED' },
   { name: 'Ashley Wilbur',   initials: 'AW', color: '#DC2626' },
@@ -524,46 +525,50 @@ const PHASES = [
   { id: 'postlaunch',  label: 'Post-Launch Reporting',           color: '#6B7280', short: 'Post-Launch'},
 ];
 
-// Default task template (offsets in days relative to launch date; negative = before launch)
 const TASK_TEMPLATES = {
   NPD: [
     // Strategy
-    { phase:'strategy', name:'Kickoff meeting + brief creation',           owner:'Kirah Ingram',   startOff:-120, dueOff:-112, status:'Not Started' },
-    { phase:'strategy', name:'Campaign brief Draft 1 in Coda',             owner:'Kirah Ingram',   startOff:-112, dueOff:-105, status:'Not Started' },
-    { phase:'strategy', name:'Campaign brief stakeholder alignment (C-BAM)',owner:'Kirah Ingram',   startOff:-105, dueOff:-98,  status:'Not Started' },
-    { phase:'strategy', name:'Shopify / Acumatica product setup',          owner:'Jake McGrath',   startOff:-100, dueOff:-84,  status:'Not Started' },
-    { phase:'strategy', name:'Key messaging doc created',                  owner:'Ashley Hanson',  startOff:-98,  dueOff:-84,  status:'Not Started', milestone:true },
-    { phase:'strategy', name:'Brand moodboard finalized',                  owner:'Tory Musser',    startOff:-90,  dueOff:-80,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Kickoff meeting + brief creation',            owner:'Kirah Ingram',   startOff:-120, dueOff:-112, status:'Not Started' },
+    { phase:'strategy', name:'Campaign brief Draft 1 in Coda',              owner:'Kirah Ingram',   startOff:-112, dueOff:-105, status:'Not Started' },
+    { phase:'strategy', name:'Campaign brief stakeholder alignment (C-BAM)', owner:'Kirah Ingram',  startOff:-105, dueOff:-98,  status:'Not Started' },
+    { phase:'strategy', name:'Shopify / Acumatica product setup',           owner:'Amy Beasley',    startOff:-100, dueOff:-84,  status:'Not Started' },
+    { phase:'strategy', name:'Key messaging doc created',                   owner:'Kirah Ingram',   startOff:-98,  dueOff:-84,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Brand moodboard finalized',                   owner:'Lindell Serrin', startOff:-90,  dueOff:-80,  status:'Not Started', milestone:true },
     // Creative
-    { phase:'creative', name:'Copywriter RD1 — campaign copy',             owner:'Ashley Hanson',  startOff:-84,  dueOff:-70,  status:'Not Started' },
-    { phase:'creative', name:'Graphic assets RD1 — social + paid',         owner:'Tory Musser',    startOff:-84,  dueOff:-63,  status:'Not Started' },
-    { phase:'creative', name:'Photography / lifestyle shoot',              owner:'Amy Beasley',    startOff:-77,  dueOff:-56,  status:'Not Started' },
-    { phase:'creative', name:'Video content production',                   owner:'Lindell Serrin', startOff:-70,  dueOff:-49,  status:'Not Started' },
-    { phase:'creative', name:'Print assets (inserts, packaging)',          owner:'Tory Musser',    startOff:-56,  dueOff:-42,  status:'Not Started' },
-    { phase:'creative', name:'Social + paid graphic asset handoff',        owner:'Tory Musser',    startOff:-42,  dueOff:-35,  status:'Not Started', milestone:true },
-    { phase:'creative', name:'SMS + LinkedIn graphic asset handoff',       owner:'Ashley Hanson',  startOff:-35,  dueOff:-28,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'Copywriter RD1 — campaign copy (external)',   owner:'',               startOff:-84,  dueOff:-70,  status:'Not Started' },
+    { phase:'creative', name:'Graphic assets RD1 — social + paid',          owner:'Nic Tecson',     startOff:-84,  dueOff:-63,  status:'Not Started' },
+    { phase:'creative', name:'Photography / lifestyle shoot',               owner:'Lindell Serrin', startOff:-77,  dueOff:-56,  status:'Not Started' },
+    { phase:'creative', name:'Video content production',                    owner:'Lindell Serrin', startOff:-70,  dueOff:-49,  status:'Not Started' },
+    { phase:'creative', name:'Email templates (Klaviyo + HubSpot)',         owner:'Nic Tecson',     startOff:-56,  dueOff:-42,  status:'Not Started' },
+    { phase:'creative', name:'Print assets (inserts, packaging)',           owner:'Nic Tecson',     startOff:-56,  dueOff:-42,  status:'Not Started' },
+    { phase:'creative', name:'Social + paid graphic asset handoff',         owner:'Nic Tecson',     startOff:-42,  dueOff:-35,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'SMS + email graphic asset handoff',           owner:'Nic Tecson',     startOff:-35,  dueOff:-28,  status:'Not Started', milestone:true },
     // Approvals
-    { phase:'approvals', name:'Copy RD1 internal review (MiiR)',           owner:'Kirah Ingram',   startOff:-70,  dueOff:-63,  status:'Not Started' },
-    { phase:'approvals', name:'Creative concept + direction finalized',    owner:'Kirah Ingram',   startOff:-63,  dueOff:-56,  status:'Not Started', milestone:true },
-    { phase:'approvals', name:'Final copy approval (all channels)',        owner:'Kirah Ingram',   startOff:-35,  dueOff:-28,  status:'Not Started', milestone:true },
-    { phase:'approvals', name:'Final creative + imagery approval',         owner:'Kirah Ingram',   startOff:-28,  dueOff:-21,  status:'Not Started' },
-    { phase:'approvals', name:'PDP + landing page RTS review',             owner:'Jake McGrath',   startOff:-21,  dueOff:-14,  status:'Not Started' },
-    { phase:'approvals', name:'Email + SMS content final approval',        owner:'Ashley Hanson',  startOff:-14,  dueOff:-7,   status:'Not Started' },
+    { phase:'approvals', name:'Copy RD1 internal review',                   owner:'Kirah Ingram',   startOff:-70,  dueOff:-63,  status:'Not Started' },
+    { phase:'approvals', name:'Creative concept + direction finalized',     owner:'Lindell Serrin', startOff:-63,  dueOff:-56,  status:'Not Started', milestone:true },
+    { phase:'approvals', name:'Final copy approval (Amy Olive)',            owner:'Amy Olive',      startOff:-35,  dueOff:-28,  status:'Not Started', milestone:true },
+    { phase:'approvals', name:'Final creative + imagery approval (Lindell)',owner:'Lindell Serrin', startOff:-28,  dueOff:-21,  status:'Not Started' },
+    { phase:'approvals', name:'Paid Meta copy + graphics review',           owner:'Ashley Hanson',  startOff:-28,  dueOff:-21,  status:'Not Started' },
+    { phase:'approvals', name:'PDP build + review',                         owner:'Amy Beasley',    startOff:-21,  dueOff:-14,  status:'Not Started' },
+    { phase:'approvals', name:'Homepage + landing page web QA',             owner:'Jake McGrath',   startOff:-21,  dueOff:-14,  status:'Not Started' },
+    { phase:'approvals', name:'Email + SMS content final approval',         owner:'Ashley Hanson',  startOff:-14,  dueOff:-7,   status:'Not Started' },
+    { phase:'approvals', name:'B2B email final approval',                   owner:'Ashley Wilbur',  startOff:-14,  dueOff:-7,   status:'Not Started' },
     // Go-Live
-    { phase:'golive',   name:'MiiR.com PDP go-live',                       owner:'Jake McGrath',   startOff:-1,   dueOff:0,    status:'Not Started' },
-    { phase:'golive',   name:'MiiR.com homepage + landing page go-live',   owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
-    { phase:'golive',   name:'Email D2C launch send (Klaviyo)',             owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
-    { phase:'golive',   name:'Email B2B launch send (HubSpot)',             owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
-    { phase:'golive',   name:'SMS launch send',                             owner:'Godwin Peck',    startOff:0,    dueOff:1,    status:'Not Started' },
-    { phase:'golive',   name:'Organic social posts go live (IG)',           owner:'Amy Olive',      startOff:0,    dueOff:1,    status:'Not Started' },
-    { phase:'golive',   name:'Paid Meta campaign launch',                  owner:'Mike Brady',     startOff:0,    dueOff:1,    status:'Not Started' },
-    { phase:'golive',   name:'72-hr early access / VIP SMS',               owner:'Godwin Peck',    startOff:-3,   dueOff:-3,   status:'Not Started' },
+    { phase:'golive',   name:'72-hr early access / VIP SMS',                owner:'Ashley Hanson',  startOff:-3,   dueOff:-3,   status:'Not Started' },
+    { phase:'golive',   name:'MiiR.com PDP go-live',                        owner:'Amy Beasley',    startOff:-1,   dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'MiiR.com homepage + landing page go-live',    owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Email D2C launch send (Klaviyo)',              owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Email B2B launch send (HubSpot)',              owner:'Godwin Peck',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'SMS launch send',                              owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Organic social posts go live (IG)',            owner:'Tory Musser',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Paid Meta campaign launch',                   owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Inventory transfer at DC (Acumatica)',         owner:'Mike Brady',     startOff:-1,   dueOff:0,    status:'Not Started' },
     // Post-launch
-    { phase:'postlaunch', name:'Post-purchase email flow active',          owner:'Ashley Hanson',  startOff:2,    dueOff:7,    status:'Not Started' },
-    { phase:'postlaunch', name:'Review launch KPIs (week 1)',              owner:'Kirah Ingram',   startOff:7,    dueOff:14,   status:'Not Started' },
-    { phase:'postlaunch', name:'Performance / paid campaign review',       owner:'Mike Brady',     startOff:7,    dueOff:21,   status:'Not Started' },
-    { phase:'postlaunch', name:'Campaign retrospective',                   owner:'Kirah Ingram',   startOff:21,   dueOff:30,   status:'Not Started', milestone:true },
-    { phase:'postlaunch', name:'Final KPI report + learnings doc',         owner:'Kirah Ingram',   startOff:28,   dueOff:42,   status:'Not Started' },
+    { phase:'postlaunch', name:'Post-purchase email flow active',           owner:'Ashley Hanson',  startOff:2,    dueOff:7,    status:'Not Started' },
+    { phase:'postlaunch', name:'Review launch KPIs (week 1)',               owner:'Kirah Ingram',   startOff:7,    dueOff:14,   status:'Not Started' },
+    { phase:'postlaunch', name:'Paid Meta campaign review',                 owner:'Ashley Hanson',  startOff:7,    dueOff:21,   status:'Not Started' },
+    { phase:'postlaunch', name:'Campaign retrospective',                    owner:'Kirah Ingram',   startOff:21,   dueOff:30,   status:'Not Started', milestone:true },
+    { phase:'postlaunch', name:'Final KPI report + learnings doc',          owner:'Kirah Ingram',   startOff:28,   dueOff:42,   status:'Not Started' },
   ],
 };
 // LTO / Seasonal / Collab use same template with minor label differences
@@ -639,7 +644,14 @@ function openNewCampaignModal() {
   document.getElementById('ncName').value = '';
   document.getElementById('newCampaignModal').classList.add('open');
 }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  // Reset delete confirmation state if present
+  const confirmRow = document.querySelector('.delete-confirm');
+  if (confirmRow) confirmRow.remove();
+  const delBtn = document.querySelector('.btn-danger');
+  if (delBtn) delBtn.textContent = 'Delete';
+}
 
 function selectType(btn) {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
@@ -943,10 +955,23 @@ function saveTask() {
 
 function deleteTask() {
   if (!editingTaskId || !activeCampaign) return;
-  if (!confirm('Delete this task?')) return;
-  activeCampaign.tasks = activeCampaign.tasks.filter(t => t.id !== editingTaskId);
-  closeModal('taskModal');
-  renderGantt();
+  const modal = document.getElementById('taskModal');
+  const existing = modal.querySelector('.delete-confirm');
+  if (existing) {
+    // Second click — confirmed, do the delete
+    activeCampaign.tasks = activeCampaign.tasks.filter(t => t.id !== editingTaskId);
+    closeModal('taskModal');
+    renderGantt();
+  } else {
+    // First click — show inline confirmation
+    const actions = modal.querySelector('.modal-actions');
+    const confirmRow = document.createElement('div');
+    confirmRow.className = 'delete-confirm';
+    confirmRow.style.cssText = 'background:#fef2f2;border:1px solid #fca5a5;border-radius:4px;padding:10px 14px;font-size:11px;color:#991b1b;margin-bottom:12px;';
+    confirmRow.innerHTML = 'Are you sure? Click <strong>Delete</strong> again to confirm.';
+    actions.parentNode.insertBefore(confirmRow, actions);
+    modal.querySelector('.btn-danger').textContent = 'Yes, delete';
+  }
 }
 
 // ─── CAMPAIGN SELECT ───────────────────────────────────────────────────────
@@ -965,11 +990,28 @@ function exportCSV() {
     const phase = PHASES.find(p => p.id === t.phase)?.label || t.phase;
     rows.push([t.name, phase, t.owner||'', t.startDate||'', t.dueDate||'', t.status||'', t.channels||'', t.notes||'']);
   });
-  const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = activeCampaign.name.replace(/\s+/g,'_') + '_schedule.csv';
-  a.click();
+  const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
+  // Try native download (works on GitHub Pages)
+  try {
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = activeCampaign.name.replace(/\s+/g,'_') + '_schedule.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } catch(e) {}
+  // Always show modal with copy fallback (works in Coda embed)
+  document.getElementById('exportCsvContent').value = csv;
+  document.getElementById('exportModalName').textContent = activeCampaign.name;
+  document.getElementById('exportModal').classList.add('open');
+}
+function copyCSV() {
+  const ta = document.getElementById('exportCsvContent');
+  ta.select();
+  try {
+    document.execCommand('copy');
+    const btn = document.getElementById('copyCsvBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = 'Copy to clipboard'; }, 2000);
+  } catch(e) { alert('Select all text in the box and copy manually.'); }
 }
 
 // ─── CLOSE MODALS ON OVERLAY CLICK ────────────────────────────────────────
@@ -983,5 +1025,1121 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 buildTeamList();
 renderGantt();
 </script>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal" style="width:600px">
+    <h3>Export CSV</h3>
+    <p class="modal-sub" id="exportModalName"></p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:10px;">On GitHub Pages, your file should download automatically. If not, copy the CSV below and paste into a .csv file.</p>
+    <textarea id="exportCsvContent" rows="10" style="width:100%;font-size:10px;font-family:monospace;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px;resize:vertical;" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('exportModal')">Close</button>
+      <button class="btn btn-primary" id="copyCsvBtn" onclick="copyCSV()">Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>// Task template — offsets averaged across Seasonal (Solar Yellow/Drift Blue) + LTO (Mother's/Father's Day) real Asana exports
+// Naming follows MiiR Asana best practices: action verb + noun [campaign]. [EXTERNAL] = copywriter tasks.
+const TASK_TEMPLATES = {
+  NPD: [
+    // ── STRATEGY ──────────────────────────────────────────────────────────────────────
+    { phase:'strategy', name:'Create campaign brief from Coda template',                          owner:'Kirah Ingram',   startOff:-110, dueOff:-107, status:'Not Started' },
+    { phase:'strategy', name:'Submit draft 1 of campaign brief',                                  owner:'Kirah Ingram',   startOff:-107, dueOff:-100, status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Review + edit draft 1 of campaign brief',                           owner:'Ashley Hanson',  startOff:-100, dueOff:-90,  status:'Not Started' },
+    { phase:'strategy', name:'Confirm SKU request details + request SKUs in Coda',                owner:'Kirah Ingram',   startOff:-100, dueOff:-90,  status:'Not Started' },
+    { phase:'strategy', name:'Schedule C-BAM',                                                    owner:'Kirah Ingram',   startOff:-90,  dueOff:-85,  status:'Not Started' },
+    { phase:'strategy', name:'C-BAM: campaign brief alignment meeting',                           owner:'Kirah Ingram',   startOff:-53,  dueOff:-52,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Update project board + overview tab post-C-BAM',                   owner:'Kirah Ingram',   startOff:-52,  dueOff:-49,  status:'Not Started' },
+    { phase:'strategy', name:'Confirm + schedule copywriter kickoff',                             owner:'Kirah Ingram',   startOff:-58,  dueOff:-56,  status:'Not Started' },
+    // ── CREATIVE DIRECTION ─────────────────────────────────────────────────────────────
+    { phase:'strategy', name:'Creative concept ideation',                                         owner:'Lindell Serrin', startOff:-80,  dueOff:-76,  status:'Not Started' },
+    { phase:'strategy', name:'Brand moodboard + creative direction finalized',                    owner:'Lindell Serrin', startOff:-76,  dueOff:-70,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Update SOW for social/paid/email/SMS graphics',                     owner:'Tory Musser',    startOff:-57,  dueOff:-53,  status:'Not Started' },
+    // ── COPY CYCLE (blocks graphics + email templates + LP + homepage) ─────────────────
+    { phase:'creative', name:'Submit + review copy requests in key messaging doc',                owner:'Ashley Hanson',  startOff:-55,  dueOff:-50,  status:'Not Started' },
+    { phase:'creative', name:'Copywriter kickoff meeting',                                        owner:'Kirah Ingram',   startOff:-45,  dueOff:-45,  status:'Not Started' },
+    { phase:'creative', name:'[EXTERNAL] Complete draft 1 of key messaging doc',                 owner:'',               startOff:-45,  dueOff:-40,  status:'Not Started' },
+    { phase:'creative', name:'Review draft 1 of key messaging doc',                              owner:'Lindell Serrin', startOff:-40,  dueOff:-39,  status:'Not Started' },
+    { phase:'creative', name:'[EXTERNAL] Draft 2 copy edits to key messaging doc',               owner:'',               startOff:-38,  dueOff:-33,  status:'Not Started' },
+    { phase:'creative', name:'Approve final key messaging doc',                                   owner:'Amy Olive',      startOff:-33,  dueOff:-32,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'Update approved key messaging doc title to FINAL + share MAM link', owner:'Kirah Ingram',  startOff:-31,  dueOff:-31,  status:'Not Started' },
+    // ── CAMPAIGN GRAPHICS ──────────────────────────────────────────────────────────────
+    { phase:'creative', name:'Create + share RD1 [campaign graphics]',                           owner:'Nic Tecson',     startOff:-50,  dueOff:-40,  status:'Not Started' },
+    { phase:'creative', name:'Brand review RD1 [campaign graphics]',                             owner:'Lindell Serrin', startOff:-36,  dueOff:-35,  status:'Not Started' },
+    { phase:'creative', name:'Edits RD1 + share RD2 [campaign graphics]',                        owner:'Nic Tecson',     startOff:-32,  dueOff:-30,  status:'Not Started' },
+    { phase:'creative', name:'Channel owner review RD2 [campaign graphics]',                     owner:'Ashley Hanson',  startOff:-28,  dueOff:-27,  status:'Not Started' },
+    { phase:'creative', name:'Edits RD2 + share FINAL [campaign graphics]',                      owner:'Nic Tecson',     startOff:-27,  dueOff:-26,  status:'Not Started' },
+    { phase:'creative', name:'Approve FINAL [campaign graphics]',                                owner:'Lindell Serrin', startOff:-24,  dueOff:-24,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'Upload final approved files to MAM [campaign graphics]',           owner:'Nic Tecson',     startOff:-23,  dueOff:-23,  status:'Not Started' },
+    // ── EMAIL TEMPLATES ────────────────────────────────────────────────────────────────
+    { phase:'creative', name:'Submit email template request + specs',                            owner:'Ashley Hanson',  startOff:-36,  dueOff:-36,  status:'Not Started' },
+    { phase:'creative', name:'Create + share RD1 [email templates]',                             owner:'Nic Tecson',     startOff:-35,  dueOff:-28,  status:'Not Started' },
+    { phase:'creative', name:'Brand review RD1 [email templates]',                               owner:'Lindell Serrin', startOff:-28,  dueOff:-28,  status:'Not Started' },
+    { phase:'creative', name:'Edits RD1 + share RD2 [email templates]',                          owner:'Nic Tecson',     startOff:-27,  dueOff:-26,  status:'Not Started' },
+    { phase:'creative', name:'Growth review RD2 [email templates]',                              owner:'Ashley Hanson',  startOff:-26,  dueOff:-26,  status:'Not Started' },
+    { phase:'creative', name:'Edits RD2 + share FINAL [email templates]',                        owner:'Nic Tecson',     startOff:-23,  dueOff:-22,  status:'Not Started' },
+    { phase:'creative', name:'Approve FINAL [email templates]',                                  owner:'Lindell Serrin', startOff:-22,  dueOff:-22,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'Share final Figma links with Ashley Hanson for RetainIQ',          owner:'Nic Tecson',     startOff:-22,  dueOff:-21,  status:'Not Started' },
+    // ── LANDING PAGE ───────────────────────────────────────────────────────────────────
+    { phase:'creative', name:'Landing page design phase',                                        owner:'Jake McGrath',   startOff:-30,  dueOff:-26,  status:'Not Started' },
+    { phase:'creative', name:'Mockup review: landing page design',                               owner:'Lindell Serrin', startOff:-26,  dueOff:-26,  status:'Not Started' },
+    { phase:'creative', name:'LP mockup edits + share final',                                    owner:'Jake McGrath',   startOff:-24,  dueOff:-23,  status:'Not Started' },
+    { phase:'creative', name:'Final approval: landing page design',                              owner:'Lindell Serrin', startOff:-21,  dueOff:-21,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'LP edits + setup in Pagefly',                                      owner:'Jake McGrath',   startOff:-18,  dueOff:-15,  status:'Not Started' },
+    // ── APPROVALS ──────────────────────────────────────────────────────────────────────
+    { phase:'approvals', name:'PDP setup: create new variants + product pages',                  owner:'Amy Beasley',   startOff:-35,  dueOff:-28,  status:'Not Started' },
+    { phase:'approvals', name:'PDP QA',                                                          owner:'Ashley Hanson',  startOff:-25,  dueOff:-24,  status:'Not Started' },
+    { phase:'approvals', name:'PDP change requests',                                             owner:'Amy Beasley',    startOff:-23,  dueOff:-22,  status:'Not Started' },
+    { phase:'approvals', name:'PDP live on D2C',                                                 owner:'Amy Beasley',    startOff:-21,  dueOff:-21,  status:'Not Started', milestone:true },
+    { phase:'approvals', name:'Sync product variants to Shopify (miir.com + b2b.miir.com)',      owner:'Max McEwan',     startOff:-30,  dueOff:-29,  status:'Not Started' },
+    { phase:'approvals', name:'Transfer inventory from Marysville to WEBDTC',                    owner:'Mike Brady',     startOff:-23,  dueOff:-22,  status:'Not Started' },
+    { phase:'approvals', name:'QA SMS sequence + approve copy',                                  owner:'Ashley Hanson',  startOff:-16,  dueOff:-15,  status:'Not Started' },
+    { phase:'approvals', name:'HP banner design (D2C)',                                          owner:'Jake McGrath',   startOff:-5,   dueOff:-4,   status:'Not Started' },
+    { phase:'approvals', name:'HP banner review (D2C)',                                          owner:'Lindell Serrin', startOff:-3,   dueOff:-3,   status:'Not Started' },
+    { phase:'approvals', name:'HP banner build (D2C)',                                           owner:'Jake McGrath',   startOff:-2,   dueOff:-2,   status:'Not Started' },
+    { phase:'approvals', name:'Landing page brand QA: pre-launch',                               owner:'Lindell Serrin', startOff:-16,  dueOff:-16,  status:'Not Started' },
+    { phase:'approvals', name:'Landing page growth QA: pre-launch',                              owner:'Ashley Hanson',  startOff:-16,  dueOff:-16,  status:'Not Started' },
+    { phase:'approvals', name:'Change requests + set LP live',                                   owner:'Jake McGrath',   startOff:-14,  dueOff:-14,  status:'Not Started' },
+    { phase:'approvals', name:'Email + SMS content final approval',                              owner:'Ashley Hanson',  startOff:-14,  dueOff:-8,   status:'Not Started' },
+    { phase:'approvals', name:'B2B email final approval',                                        owner:'Ashley Wilbur',  startOff:-14,  dueOff:-8,   status:'Not Started' },
+    { phase:'approvals', name:'Paid Meta copy + graphics review',                                owner:'Ashley Hanson',  startOff:-14,  dueOff:-8,   status:'Not Started' },
+    // ── GO-LIVE ────────────────────────────────────────────────────────────────────────
+    { phase:'golive',   name:'72-hr VIP / early access SMS send',                                owner:'Ashley Hanson',  startOff:-3,   dueOff:-3,   status:'Not Started' },
+    { phase:'golive',   name:'Set HP banner live (D2C)',                                         owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Set HP banner live (B2B)',                                         owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Landing page go-live',                                             owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Email D2C launch send (Klaviyo)',                                  owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Email B2B launch send (HubSpot)',                                  owner:'Godwin Peck',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'SMS launch send',                                                  owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Organic social posts go live (IG)',                                owner:'Tory Musser',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Paid Meta campaign launch',                                        owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    // ── POST-LAUNCH ────────────────────────────────────────────────────────────────────
+    { phase:'postlaunch', name:'Activate post-purchase email flow',                              owner:'Ashley Hanson',  startOff:2,    dueOff:7,    status:'Not Started' },
+    { phase:'postlaunch', name:'Review launch KPIs (week 1)',                                    owner:'Kirah Ingram',   startOff:7,    dueOff:14,   status:'Not Started' },
+    { phase:'postlaunch', name:'Review paid Meta campaign performance',                          owner:'Ashley Hanson',  startOff:7,    dueOff:21,   status:'Not Started' },
+    { phase:'postlaunch', name:'Complete campaign retrospective',                                owner:'Kirah Ingram',   startOff:21,   dueOff:30,   status:'Not Started', milestone:true },
+    { phase:'postlaunch', name:'Finalize KPI report + learnings doc',                            owner:'Kirah Ingram',   startOff:28,   dueOff:42,   status:'Not Started' },
+  ],
+};
+// LTO / Seasonal / Collab use same template with minor label differences
+TASK_TEMPLATES.LTO = TASK_TEMPLATES.NPD.map(t => ({...t}));
+TASK_TEMPLATES.Seasonal = TASK_TEMPLATES.NPD.map(t => ({...t}));
+TASK_TEMPLATES.Collab = TASK_TEMPLATES.NPD.map(t => ({...t}));
+
+// ─── UTILS ─────────────────────────────────────────────────────────────────
+function dateStr(d) {
+  if (!d) return '';
+  const dt = d instanceof Date ? d : new Date(d);
+  return dt.toISOString().split('T')[0];
+}
+function addDays(ds, days) {
+  const d = new Date(ds);
+  d.setDate(d.getDate() + days);
+  return dateStr(d);
+}
+function daysBetween(a, b) {
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+function uid() { return Math.random().toString(36).slice(2, 9); }
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let campaigns = [];
+let activeCampaign = null;
+let activeOwnerFilter = 'all';
+let editingTaskId = null;
+let collapseState = {}; // phaseId → bool
+let zoomLevel = 'week'; // week | month
+
+const STATUS_COLORS = {
+  'Done':        '#22c55e',
+  'In Progress': '#3b82f6',
+  'In Review':   '#f59e0b',
+  'Edits':       '#f59e0b',
+  'Not Started': '#d1d5db',
+  'Overdue':     '#ef4444',
+  'On Hold':     '#ef4444',
+  'Descoped':    '#9ca3af',
+  '✏️':          '#3b82f6',
+};
+
+function statusColor(s) { return STATUS_COLORS[s] || '#d1d5db'; }
+
+// ─── TEAM SIDEBAR ──────────────────────────────────────────────────────────
+function buildTeamList() {
+  const list = document.getElementById('teamList');
+  list.innerHTML = `<div class="team-item active" data-owner="all" onclick="filterOwner('all', this)">
+    <div class="avatar" style="background:var(--text)">ALL</div><span>All team members</span></div>`;
+  TEAM.forEach(m => {
+    list.innerHTML += `<div class="team-item" data-owner="${m.name}" onclick="filterOwner('${m.name}', this)">
+      <div class="avatar" style="background:${m.color}">${m.initials}</div>
+      <span>${m.name}</span></div>`;
+  });
+  const legend = document.getElementById('phaseLegend');
+  legend.innerHTML = PHASES.map(p =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${p.color}"></div>${p.short}</div>`
+  ).join('');
+}
+
+function filterOwner(owner, el) {
+  activeOwnerFilter = owner;
+  document.querySelectorAll('.team-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  renderGantt();
+}
+
+// ─── MODALS ────────────────────────────────────────────────────────────────
+function openNewCampaignModal() {
+  const d = new Date(); d.setMonth(d.getMonth() + 3);
+  document.getElementById('ncLaunchDate').value = dateStr(d);
+  document.getElementById('ncName').value = '';
+  document.getElementById('newCampaignModal').classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  // Reset delete confirmation state if present
+  const confirmRow = document.querySelector('.delete-confirm');
+  if (confirmRow) confirmRow.remove();
+  const delBtn = document.querySelector('.btn-danger');
+  if (delBtn) delBtn.textContent = 'Delete';
+}
+
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function createCampaign() {
+  const name = document.getElementById('ncName').value.trim();
+  const launchDate = document.getElementById('ncLaunchDate').value;
+  const type = document.querySelector('.type-btn.active')?.dataset.type || 'NPD';
+  if (!name || !launchDate) { alert('Please fill in the campaign name and launch date.'); return; }
+
+  const tasks = (TASK_TEMPLATES[type] || TASK_TEMPLATES.NPD).map(t => ({
+    id: uid(),
+    ...t,
+    startDate: addDays(launchDate, t.startOff),
+    dueDate:   addDays(launchDate, t.dueOff),
+    channels: '',
+    notes: '',
+  }));
+
+  const campaign = { id: uid(), name, type, launchDate, tasks };
+  campaigns.push(campaign);
+  activeCampaign = campaign;
+
+  // Update select
+  const sel = document.getElementById('campaignSelect');
+  const opt = document.createElement('option');
+  opt.value = campaign.id; opt.textContent = name; opt.selected = true;
+  sel.appendChild(opt);
+
+  closeModal('newCampaignModal');
+  updateSidebar();
+  renderGantt();
+}
+
+// ─── SIDEBAR UPDATE ────────────────────────────────────────────────────────
+function updateSidebar() {
+  const sec = document.getElementById('campaignInfoSection');
+  if (!activeCampaign) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  document.getElementById('sidebarCampaignName').textContent = activeCampaign.name;
+  document.getElementById('launchDateInput').value = activeCampaign.launchDate;
+
+  const tasks = activeCampaign.tasks;
+  const dates = tasks.map(t => t.startDate).filter(Boolean).sort();
+  const span = dates.length > 0
+    ? `${daysBetween(dates[0], activeCampaign.launchDate)} days pre-launch runway`
+    : '';
+  document.getElementById('campaignSpan').textContent = span;
+}
+
+function recalcDates() {
+  if (!activeCampaign) return;
+  const newLaunch = document.getElementById('launchDateInput').value;
+  activeCampaign.launchDate = newLaunch;
+  const tpl = TASK_TEMPLATES[activeCampaign.type] || TASK_TEMPLATES.NPD;
+  activeCampaign.tasks.forEach((task, i) => {
+    const t = tpl[i];
+    if (t) {
+      task.startDate = addDays(newLaunch, t.startOff);
+      task.dueDate   = addDays(newLaunch, t.dueOff);
+    }
+  });
+  updateSidebar();
+  renderGantt();
+}
+
+// ─── GANTT RENDER ──────────────────────────────────────────────────────────
+function renderGantt() {
+  const main = document.getElementById('mainArea');
+  if (!activeCampaign) {
+    main.innerHTML = `<div class="empty-state"><div class="big">🚀</div>
+      <p>Create a new campaign to get started.<br>Your team's launch template is ready to go.</p>
+      <br><button class="btn btn-primary" onclick="openNewCampaignModal()">+ New Campaign</button></div>`;
+    return;
+  }
+
+  const tasks = activeCampaign.tasks.filter(t =>
+    activeOwnerFilter === 'all' || t.owner === activeOwnerFilter
+  );
+
+  // Compute date range
+  const allDates = tasks.flatMap(t => [t.startDate, t.dueDate]).filter(Boolean).sort();
+  if (!allDates.length) return;
+  const rangeStart = allDates[0] < addDays(activeCampaign.launchDate, -130)
+    ? allDates[0] : addDays(activeCampaign.launchDate, -130);
+  const rangeEnd   = addDays(activeCampaign.launchDate, 50);
+
+  const totalDays  = daysBetween(rangeStart, rangeEnd);
+  const COL_W      = zoomLevel === 'month' ? 16 : 32;
+  const totalWidth = totalDays * COL_W;
+
+  const today = dateStr(new Date());
+  const todayOff = daysBetween(rangeStart, today);
+
+  // Build month labels
+  let months = [];
+  let cursor = new Date(rangeStart);
+  const end   = new Date(rangeEnd);
+  while (cursor <= end) {
+    const monthStart = dateStr(cursor);
+    const off = daysBetween(rangeStart, monthStart);
+    months.push({ label: cursor.toLocaleString('default', {month:'short', year:'2-digit'}), off });
+    cursor.setMonth(cursor.getMonth() + 1);
+    cursor.setDate(1);
+  }
+
+  // ── HTML ──
+  let html = `
+  <div class="gantt-toolbar">
+    <h2>${activeCampaign.name} <span class="subtitle">Launch: ${activeCampaign.launchDate}</span></h2>
+    <div class="zoom-btns">
+      <button class="zoom-btn ${zoomLevel==='week'?'active':''}" onclick="setZoom('week')">Week</button>
+      <button class="zoom-btn ${zoomLevel==='month'?'active':''}" onclick="setZoom('month')">Month</button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openAddTaskModal()">+ Task</button>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-grid" style="min-width:${totalWidth + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--label-w').trim())}px">`;
+
+  // Labels column
+  html += `<div class="gantt-labels">
+    <div class="label-header">Task</div>`;
+
+  PHASES.forEach(phase => {
+    const phaseTasks = tasks.filter(t => t.phase === phase.id);
+    const collapsed = collapseState[phase.id];
+    html += `<div class="phase-group">
+      <div class="phase-header" onclick="togglePhase('${phase.id}')">
+        <div class="phase-dot" style="background:${phase.color}"></div>
+        ${phase.label}
+        <span class="collapse-icon">${collapsed ? '▶' : '▼'}</span>
+      </div>`;
+    if (!collapsed) {
+      phaseTasks.forEach(task => {
+        const owner = TEAM.find(m => m.name === task.owner);
+        html += `<div class="task-label-row" onclick="openTaskModal('${task.id}')">
+          <div class="status-dot" style="background:${statusColor(task.status)}"></div>
+          <span class="task-name" title="${task.name}">${task.milestone ? '◆ ' : ''}${task.name}</span>
+          ${owner ? `<span class="owner-chip" style="border-color:${owner.color};color:${owner.color}">${owner.initials}</span>` : ''}
+        </div>`;
+      });
+      html += `<div class="add-task-row" onclick="openAddTaskModal('${phase.id}')">+ Add task to ${phase.short}</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`; // end gantt-labels
+
+  // Chart column
+  html += `<div class="gantt-chart" style="width:${totalWidth}px;position:relative">`;
+
+  // Header with month/day labels
+  html += `<div class="gantt-header-row" style="width:${totalWidth}px;position:relative">`;
+  months.forEach((m, i) => {
+    const nextOff = i + 1 < months.length ? months[i+1].off : totalDays;
+    html += `<div class="gantt-month-label" style="position:absolute;left:${m.off*COL_W}px;width:${(nextOff-m.off)*COL_W}px">${m.label}</div>`;
+  });
+  html += `</div>`;
+
+  // Today line
+  if (todayOff >= 0 && todayOff <= totalDays) {
+    html += `<div class="today-line" style="left:${todayOff * COL_W}px">
+      <div class="today-label" style="left:50%">Today</div></div>`;
+  }
+
+  // Launch day line
+  const launchOff = daysBetween(rangeStart, activeCampaign.launchDate);
+  html += `<div class="today-line" style="left:${launchOff*COL_W}px;background:#8B5CF6;width:2px">
+    <div class="today-label" style="left:50%;background:#8B5CF6">🚀 Launch</div></div>`;
+
+  // Phase rows + task bars
+  PHASES.forEach(phase => {
+    const phaseTasks = tasks.filter(t => t.phase === phase.id);
+    const collapsed = collapseState[phase.id];
+
+    // Phase header row
+    html += `<div class="phase-section-gantt">`;
+    for (let d = 0; d < totalDays; d++) {
+      html += `<div class="phase-cell" style="width:${COL_W}px"></div>`;
+    }
+    html += `</div>`;
+
+    if (!collapsed) {
+      phaseTasks.forEach(task => {
+        html += `<div class="gantt-row" style="position:relative;height:var(--row-h)">`;
+        // Background cells
+        for (let d = 0; d < totalDays; d++) {
+          const dayDate = addDays(rangeStart, d);
+          const dow = new Date(dayDate).getDay();
+          const isWeekend = dow === 0 || dow === 6;
+          const isToday = dayDate === today;
+          html += `<div class="gantt-cell${isWeekend?' weekend':''}${isToday?' today-col':''}" style="width:${COL_W}px"></div>`;
+        }
+        // Task bar
+        if (task.startDate && task.dueDate) {
+          const barStart = daysBetween(rangeStart, task.startDate);
+          const barDur   = Math.max(1, daysBetween(task.startDate, task.dueDate));
+          const barW     = barDur * COL_W;
+          const barL     = barStart * COL_W;
+          const phaseColor = PHASES.find(p => p.id === task.phase)?.color || '#888';
+          const label = barDur > 5 ? task.name : '';
+          if (task.milestone) {
+            html += `<div class="task-bar milestone" style="left:${barL+COL_W/2-10}px;background:var(--yellow)" onclick="openTaskModal('${task.id}')">◆</div>`;
+          } else {
+            html += `<div class="task-bar" style="left:${barL}px;width:${barW}px;background:${phaseColor};opacity:${task.status==='Done'?0.5:1}" onclick="openTaskModal('${task.id}')">${label}</div>`;
+          }
+        }
+        html += `</div>`;
+      });
+      // Add task row
+      html += `<div class="gantt-row" style="height:var(--row-h)">`;
+      for (let d = 0; d < totalDays; d++) html += `<div class="gantt-cell" style="width:${COL_W}px"></div>`;
+      html += `</div>`;
+    }
+  });
+
+  html += `</div></div></div>`; // end chart, grid, wrap
+
+  main.innerHTML = html;
+  updateSidebar();
+}
+
+function setZoom(level) { zoomLevel = level; renderGantt(); }
+function togglePhase(id) { collapseState[id] = !collapseState[id]; renderGantt(); }
+
+// ─── TASK MODAL ────────────────────────────────────────────────────────────
+function populateOwnerDropdown(selectId, selectedOwner) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = '<option value="">Unassigned</option>';
+  TEAM.forEach(m => {
+    sel.innerHTML += `<option value="${m.name}" ${m.name === selectedOwner ? 'selected' : ''}>${m.name}</option>`;
+  });
+}
+
+function openTaskModal(taskId) {
+  if (!activeCampaign) return;
+  const task = activeCampaign.tasks.find(t => t.id === taskId);
+  if (!task) return;
+  editingTaskId = taskId;
+  const phase = PHASES.find(p => p.id === task.phase);
+  document.getElementById('taskModalTitle').textContent = task.name;
+  document.getElementById('taskModalPhase').textContent = phase?.label || '';
+  document.getElementById('tmName').value = task.name;
+  document.getElementById('tmStart').value = task.startDate || '';
+  document.getElementById('tmDue').value = task.dueDate || '';
+  document.getElementById('tmStatus').value = task.status || 'Not Started';
+  document.getElementById('tmChannels').value = task.channels || '';
+  document.getElementById('tmNotes').value = task.notes || '';
+  populateOwnerDropdown('tmOwner', task.owner);
+  document.getElementById('taskModal').classList.add('open');
+}
+
+function openAddTaskModal(phaseId) {
+  if (!activeCampaign) return;
+  editingTaskId = null;
+  document.getElementById('taskModalTitle').textContent = 'New Task';
+  const phase = PHASES.find(p => p.id === phaseId) || PHASES[0];
+  document.getElementById('taskModalPhase').textContent = phase.label;
+  document.getElementById('tmName').value = '';
+  document.getElementById('tmStart').value = activeCampaign.launchDate;
+  document.getElementById('tmDue').value = activeCampaign.launchDate;
+  document.getElementById('tmStatus').value = 'Not Started';
+  document.getElementById('tmChannels').value = '';
+  document.getElementById('tmNotes').value = '';
+  populateOwnerDropdown('tmOwner', '');
+  document.getElementById('taskModal')._addPhase = phaseId || 'strategy';
+  document.getElementById('taskModal').classList.add('open');
+}
+
+function saveTask() {
+  if (!activeCampaign) return;
+  if (editingTaskId) {
+    const task = activeCampaign.tasks.find(t => t.id === editingTaskId);
+    if (task) {
+      task.name      = document.getElementById('tmName').value;
+      task.owner     = document.getElementById('tmOwner').value;
+      task.startDate = document.getElementById('tmStart').value;
+      task.dueDate   = document.getElementById('tmDue').value;
+      task.status    = document.getElementById('tmStatus').value;
+      task.channels  = document.getElementById('tmChannels').value;
+      task.notes     = document.getElementById('tmNotes').value;
+    }
+  } else {
+    const phaseId = document.getElementById('taskModal')._addPhase || 'strategy';
+    activeCampaign.tasks.push({
+      id: uid(), phase: phaseId,
+      name:      document.getElementById('tmName').value,
+      owner:     document.getElementById('tmOwner').value,
+      startDate: document.getElementById('tmStart').value,
+      dueDate:   document.getElementById('tmDue').value,
+      status:    document.getElementById('tmStatus').value,
+      channels:  document.getElementById('tmChannels').value,
+      notes:     document.getElementById('tmNotes').value,
+      startOff: 0, dueOff: 0,
+    });
+  }
+  closeModal('taskModal');
+  renderGantt();
+}
+
+function deleteTask() {
+  if (!editingTaskId || !activeCampaign) return;
+  const modal = document.getElementById('taskModal');
+  const existing = modal.querySelector('.delete-confirm');
+  if (existing) {
+    // Second click — confirmed, do the delete
+    activeCampaign.tasks = activeCampaign.tasks.filter(t => t.id !== editingTaskId);
+    closeModal('taskModal');
+    renderGantt();
+  } else {
+    // First click — show inline confirmation
+    const actions = modal.querySelector('.modal-actions');
+    const confirmRow = document.createElement('div');
+    confirmRow.className = 'delete-confirm';
+    confirmRow.style.cssText = 'background:#fef2f2;border:1px solid #fca5a5;border-radius:4px;padding:10px 14px;font-size:11px;color:#991b1b;margin-bottom:12px;';
+    confirmRow.innerHTML = 'Are you sure? Click <strong>Delete</strong> again to confirm.';
+    actions.parentNode.insertBefore(confirmRow, actions);
+    modal.querySelector('.btn-danger').textContent = 'Yes, delete';
+  }
+}
+
+// ─── CAMPAIGN SELECT ───────────────────────────────────────────────────────
+document.getElementById('campaignSelect').addEventListener('change', function() {
+  const id = this.value;
+  activeCampaign = campaigns.find(c => c.id === id) || null;
+  updateSidebar();
+  renderGantt();
+});
+
+// ─── EXPORT ────────────────────────────────────────────────────────────────
+function exportCSV() {
+  if (!activeCampaign) return;
+  const rows = [['Task','Phase','Owner','Start Date','Due Date','Status','Channels','Notes']];
+  activeCampaign.tasks.forEach(t => {
+    const phase = PHASES.find(p => p.id === t.phase)?.label || t.phase;
+    rows.push([t.name, phase, t.owner||'', t.startDate||'', t.dueDate||'', t.status||'', t.channels||'', t.notes||'']);
+  });
+  const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
+  // Try native download (works on GitHub Pages)
+  try {
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = activeCampaign.name.replace(/\s+/g,'_') + '_schedule.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } catch(e) {}
+  // Always show modal with copy fallback (works in Coda embed)
+  document.getElementById('exportCsvContent').value = csv;
+  document.getElementById('exportModalName').textContent = activeCampaign.name;
+  document.getElementById('exportModal').classList.add('open');
+}
+function copyCSV() {
+  const ta = document.getElementById('exportCsvContent');
+  ta.select();
+  try {
+    document.execCommand('copy');
+    const btn = document.getElementById('copyCsvBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = 'Copy to clipboard'; }, 2000);
+  } catch(e) { alert('Select all text in the box and copy manually.'); }
+}
+
+// ─── CLOSE MODALS ON OVERLAY CLICK ────────────────────────────────────────
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+buildTeamList();
+renderGantt();
+</script>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal" style="width:600px">
+    <h3>Export CSV</h3>
+    <p class="modal-sub" id="exportModalName"></p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:10px;">On GitHub Pages, your file should download automatically. If not, copy the CSV below and paste into a .csv file.</p>
+    <textarea id="exportCsvContent" rows="10" style="width:100%;font-size:10px;font-family:monospace;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px;resize:vertical;" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('exportModal')">Close</button>
+      <button class="btn btn-primary" id="copyCsvBtn" onclick="copyCSV()">Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>// Task template — offsets calibrated from real MiiR launch data (Solar Yellow/Drift Blue Seasonal, June 2026)
+// Negative = days before launch. Subtask steps noted in task name for Jess's reference.
+const TASK_TEMPLATES = {
+  NPD: [
+    // ── STRATEGY ────────────────────────────────────────────────────────
+    { phase:'strategy', name:'Create campaign brief from template in Coda',                   owner:'Kirah Ingram',   startOff:-124, dueOff:-120, status:'Not Started' },
+    { phase:'strategy', name:'Submit draft 1 of campaign brief',                              owner:'Kirah Ingram',   startOff:-120, dueOff:-115, status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Team: review + edit draft 1 of campaign brief',                 owner:'Ashley Hanson',  startOff:-115, dueOff:-99,  status:'Not Started' },
+    { phase:'strategy', name:'Shopify / Acumatica product setup',                             owner:'Amy Beasley',    startOff:-99,  dueOff:-84,  status:'Not Started' },
+    { phase:'strategy', name:'Schedule C-BAM',                                                owner:'Kirah Ingram',   startOff:-99,  dueOff:-84,  status:'Not Started' },
+    { phase:'strategy', name:'C-BAM: campaign brief alignment meeting',                       owner:'Kirah Ingram',   startOff:-84,  dueOff:-79,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Brand moodboard + creative direction finalized',                owner:'Lindell Serrin', startOff:-99,  dueOff:-79,  status:'Not Started', milestone:true },
+    { phase:'strategy', name:'Confirm + schedule copywriter kickoff',                         owner:'Kirah Ingram',   startOff:-71,  dueOff:-70,  status:'Not Started' },
+    // ── COPY (blocks creative) ──────────────────────────────────────────
+    { phase:'creative', name:'Team: submit + review copy requests in key messaging doc',      owner:'Ashley Hanson',  startOff:-47,  dueOff:-43,  status:'Not Started' },
+    { phase:'creative', name:'Copywriter kickoff meeting',                                    owner:'Kirah Ingram',   startOff:-40,  dueOff:-40,  status:'Not Started' },
+    { phase:'creative', name:'[EXTERNAL] Draft 1 of key messaging doc',                      owner:'',               startOff:-40,  dueOff:-35,  status:'Not Started' },
+    { phase:'creative', name:'Draft 1 copy review',                                           owner:'Lindell Serrin', startOff:-34,  dueOff:-34,  status:'Not Started' },
+    { phase:'creative', name:'[EXTERNAL] Draft 2 copy edits',                                owner:'',               startOff:-33,  dueOff:-28,  status:'Not Started' },
+    { phase:'creative', name:'Final key messaging doc approval',                              owner:'Amy Olive',      startOff:-28,  dueOff:-27,  status:'Not Started', milestone:true },
+    // ── GRAPHICS ────────────────────────────────────────────────────────
+    { phase:'creative', name:'Tory: SOW gut check + scope of graphics for Nic',              owner:'Tory Musser',    startOff:-41,  dueOff:-37,  status:'Not Started' },
+    { phase:'creative', name:'Campaign graphics: create + share RD1',                         owner:'Nic Tecson',     startOff:-36,  dueOff:-27,  status:'Not Started' },
+    { phase:'creative', name:'Campaign graphics: brand review RD1',                           owner:'Lindell Serrin', startOff:-27,  dueOff:-26,  status:'Not Started' },
+    { phase:'creative', name:'Campaign graphics: edits RD1 + share RD2',                     owner:'Nic Tecson',     startOff:-23,  dueOff:-21,  status:'Not Started' },
+    { phase:'creative', name:'Campaign graphics: channel owner review RD2',                   owner:'Ashley Hanson',  startOff:-20,  dueOff:-19,  status:'Not Started' },
+    { phase:'creative', name:'Campaign graphics: edits RD2 + share FINAL',                   owner:'Nic Tecson',     startOff:-15,  dueOff:-14,  status:'Not Started' },
+    { phase:'creative', name:'Campaign graphics: approve FINAL',                              owner:'Lindell Serrin', startOff:-14,  dueOff:-13,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'Campaign graphics: upload final files to MAM',                  owner:'Nic Tecson',     startOff:-13,  dueOff:-12,  status:'Not Started' },
+    // ── EMAIL TEMPLATES ──────────────────────────────────────────────────
+    { phase:'creative', name:'Ashley: submit email template request + specs',                 owner:'Ashley Hanson',  startOff:-35,  dueOff:-35,  status:'Not Started' },
+    { phase:'creative', name:'Email template: create + share RD1',                            owner:'Nic Tecson',     startOff:-30,  dueOff:-23,  status:'Not Started' },
+    { phase:'creative', name:'Email template: brand review RD1',                              owner:'Lindell Serrin', startOff:-22,  dueOff:-22,  status:'Not Started' },
+    { phase:'creative', name:'Email template: edits RD1 + share RD2',                        owner:'Nic Tecson',     startOff:-21,  dueOff:-20,  status:'Not Started' },
+    { phase:'creative', name:'Email template: growth review RD2',                             owner:'Ashley Hanson',  startOff:-19,  dueOff:-19,  status:'Not Started' },
+    { phase:'creative', name:'Email template: edits RD2 + share FINAL',                      owner:'Nic Tecson',     startOff:-15,  dueOff:-14,  status:'Not Started' },
+    { phase:'creative', name:'Email template: approve FINAL',                                 owner:'Lindell Serrin', startOff:-13,  dueOff:-13,  status:'Not Started', milestone:true },
+    { phase:'creative', name:'Email template: share Figma links w/ Ashley for RetainIQ',     owner:'Nic Tecson',     startOff:-12,  dueOff:-12,  status:'Not Started' },
+    // ── LANDING PAGE ────────────────────────────────────────────────────
+    { phase:'creative', name:'Landing page design phase',                                     owner:'Jake McGrath',   startOff:-23,  dueOff:-19,  status:'Not Started' },
+    { phase:'creative', name:'Landing page: mockup review',                                   owner:'Lindell Serrin', startOff:-15,  dueOff:-15,  status:'Not Started' },
+    { phase:'creative', name:'Landing page: mockup edits + share final',                      owner:'Jake McGrath',   startOff:-14,  dueOff:-12,  status:'Not Started' },
+    { phase:'creative', name:'Landing page: final approval',                                  owner:'Lindell Serrin', startOff:-9,   dueOff:-9,   status:'Not Started', milestone:true },
+    { phase:'creative', name:'Landing page: edits + build in Pagefly',                        owner:'Jake McGrath',   startOff:-8,   dueOff:-5,   status:'Not Started' },
+    // ── APPROVALS ───────────────────────────────────────────────────────
+    { phase:'approvals', name:'PDP setup: create variants + new product page',                owner:'Amy Beasley',   startOff:-23,  dueOff:-20,  status:'Not Started' },
+    { phase:'approvals', name:'PDP QA',                                                       owner:'Ashley Hanson',  startOff:-19,  dueOff:-19,  status:'Not Started' },
+    { phase:'approvals', name:'PDP change requests',                                          owner:'Amy Beasley',    startOff:-15,  dueOff:-14,  status:'Not Started' },
+    { phase:'approvals', name:'PDP + color variants live on D2C',                             owner:'Amy Beasley',    startOff:-14,  dueOff:-13,  status:'Not Started', milestone:true },
+    { phase:'approvals', name:'Inventory sync to Shopify (variants)',                         owner:'Max McEwan',     startOff:-26,  dueOff:-26,  status:'Not Started' },
+    { phase:'approvals', name:'Inventory sync to Shopify (new product)',                      owner:'Max McEwan',     startOff:-19,  dueOff:-19,  status:'Not Started' },
+    { phase:'approvals', name:'Transfer inventory from Marysville to WEBDTC',                 owner:'Mike Brady',     startOff:-15,  dueOff:-15,  status:'Not Started' },
+    { phase:'approvals', name:'B2B email final approval',                                     owner:'Ashley Wilbur',  startOff:-14,  dueOff:-7,   status:'Not Started' },
+    { phase:'approvals', name:'Email + SMS content final approval',                           owner:'Ashley Hanson',  startOff:-14,  dueOff:-7,   status:'Not Started' },
+    { phase:'approvals', name:'Paid Meta: copy + graphics review',                            owner:'Ashley Hanson',  startOff:-14,  dueOff:-7,   status:'Not Started' },
+    { phase:'approvals', name:'HP banner setup (D2C)',                                        owner:'Jake McGrath',   startOff:-2,   dueOff:-2,   status:'Not Started' },
+    { phase:'approvals', name:'HP banner QA (D2C)',                                           owner:'Ashley Hanson',  startOff:-1,   dueOff:-1,   status:'Not Started' },
+    { phase:'approvals', name:'Landing page brand QA: pre-launch',                            owner:'Lindell Serrin', startOff:-2,   dueOff:-2,   status:'Not Started' },
+    { phase:'approvals', name:'Landing page growth QA: pre-launch',                           owner:'Ashley Hanson',  startOff:-2,   dueOff:-2,   status:'Not Started' },
+    { phase:'approvals', name:'Landing page change requests + set live',                      owner:'Jake McGrath',   startOff:-1,   dueOff:0,    status:'Not Started' },
+    // ── GO-LIVE ──────────────────────────────────────────────────────────
+    { phase:'golive',   name:'72-hr early access / VIP SMS',                                  owner:'Ashley Hanson',  startOff:-3,   dueOff:-3,   status:'Not Started' },
+    { phase:'golive',   name:'MiiR.com homepage go-live + set HP banner live',                owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'B2B homepage go-live',                                          owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Landing page go-live',                                          owner:'Jake McGrath',   startOff:0,    dueOff:0,    status:'Not Started' },
+    { phase:'golive',   name:'Email D2C launch send (Klaviyo)',                               owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Email B2B launch send (HubSpot)',                               owner:'Godwin Peck',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'SMS launch send',                                               owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Organic social posts go live (IG)',                             owner:'Tory Musser',    startOff:0,    dueOff:1,    status:'Not Started' },
+    { phase:'golive',   name:'Paid Meta campaign launch',                                     owner:'Ashley Hanson',  startOff:0,    dueOff:1,    status:'Not Started' },
+    // ── POST-LAUNCH ──────────────────────────────────────────────────────
+    { phase:'postlaunch', name:'Post-purchase email flow active',                             owner:'Ashley Hanson',  startOff:2,    dueOff:7,    status:'Not Started' },
+    { phase:'postlaunch', name:'Review launch KPIs (week 1)',                                 owner:'Kirah Ingram',   startOff:7,    dueOff:14,   status:'Not Started' },
+    { phase:'postlaunch', name:'Paid Meta campaign review',                                   owner:'Ashley Hanson',  startOff:7,    dueOff:21,   status:'Not Started' },
+    { phase:'postlaunch', name:'Campaign retrospective',                                      owner:'Kirah Ingram',   startOff:21,   dueOff:30,   status:'Not Started', milestone:true },
+    { phase:'postlaunch', name:'Final KPI report + learnings doc',                            owner:'Kirah Ingram',   startOff:28,   dueOff:42,   status:'Not Started' },
+  ],
+};
+// LTO / Seasonal / Collab use same template with minor label differences
+TASK_TEMPLATES.LTO = TASK_TEMPLATES.NPD.map(t => ({...t}));
+TASK_TEMPLATES.Seasonal = TASK_TEMPLATES.NPD.map(t => ({...t}));
+TASK_TEMPLATES.Collab = TASK_TEMPLATES.NPD.map(t => ({...t}));
+
+// ─── UTILS ─────────────────────────────────────────────────────────────────
+function dateStr(d) {
+  if (!d) return '';
+  const dt = d instanceof Date ? d : new Date(d);
+  return dt.toISOString().split('T')[0];
+}
+function addDays(ds, days) {
+  const d = new Date(ds);
+  d.setDate(d.getDate() + days);
+  return dateStr(d);
+}
+function daysBetween(a, b) {
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+function uid() { return Math.random().toString(36).slice(2, 9); }
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let campaigns = [];
+let activeCampaign = null;
+let activeOwnerFilter = 'all';
+let editingTaskId = null;
+let collapseState = {}; // phaseId → bool
+let zoomLevel = 'week'; // week | month
+
+const STATUS_COLORS = {
+  'Done':        '#22c55e',
+  'In Progress': '#3b82f6',
+  'In Review':   '#f59e0b',
+  'Edits':       '#f59e0b',
+  'Not Started': '#d1d5db',
+  'Overdue':     '#ef4444',
+  'On Hold':     '#ef4444',
+  'Descoped':    '#9ca3af',
+  '✏️':          '#3b82f6',
+};
+
+function statusColor(s) { return STATUS_COLORS[s] || '#d1d5db'; }
+
+// ─── TEAM SIDEBAR ──────────────────────────────────────────────────────────
+function buildTeamList() {
+  const list = document.getElementById('teamList');
+  list.innerHTML = `<div class="team-item active" data-owner="all" onclick="filterOwner('all', this)">
+    <div class="avatar" style="background:var(--text)">ALL</div><span>All team members</span></div>`;
+  TEAM.forEach(m => {
+    list.innerHTML += `<div class="team-item" data-owner="${m.name}" onclick="filterOwner('${m.name}', this)">
+      <div class="avatar" style="background:${m.color}">${m.initials}</div>
+      <span>${m.name}</span></div>`;
+  });
+  const legend = document.getElementById('phaseLegend');
+  legend.innerHTML = PHASES.map(p =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${p.color}"></div>${p.short}</div>`
+  ).join('');
+}
+
+function filterOwner(owner, el) {
+  activeOwnerFilter = owner;
+  document.querySelectorAll('.team-item').forEach(e => e.classList.remove('active'));
+  el.classList.add('active');
+  renderGantt();
+}
+
+// ─── MODALS ────────────────────────────────────────────────────────────────
+function openNewCampaignModal() {
+  const d = new Date(); d.setMonth(d.getMonth() + 3);
+  document.getElementById('ncLaunchDate').value = dateStr(d);
+  document.getElementById('ncName').value = '';
+  document.getElementById('newCampaignModal').classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  // Reset delete confirmation state if present
+  const confirmRow = document.querySelector('.delete-confirm');
+  if (confirmRow) confirmRow.remove();
+  const delBtn = document.querySelector('.btn-danger');
+  if (delBtn) delBtn.textContent = 'Delete';
+}
+
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function createCampaign() {
+  const name = document.getElementById('ncName').value.trim();
+  const launchDate = document.getElementById('ncLaunchDate').value;
+  const type = document.querySelector('.type-btn.active')?.dataset.type || 'NPD';
+  if (!name || !launchDate) { alert('Please fill in the campaign name and launch date.'); return; }
+
+  const tasks = (TASK_TEMPLATES[type] || TASK_TEMPLATES.NPD).map(t => ({
+    id: uid(),
+    ...t,
+    startDate: addDays(launchDate, t.startOff),
+    dueDate:   addDays(launchDate, t.dueOff),
+    channels: '',
+    notes: '',
+  }));
+
+  const campaign = { id: uid(), name, type, launchDate, tasks };
+  campaigns.push(campaign);
+  activeCampaign = campaign;
+
+  // Update select
+  const sel = document.getElementById('campaignSelect');
+  const opt = document.createElement('option');
+  opt.value = campaign.id; opt.textContent = name; opt.selected = true;
+  sel.appendChild(opt);
+
+  closeModal('newCampaignModal');
+  updateSidebar();
+  renderGantt();
+}
+
+// ─── SIDEBAR UPDATE ────────────────────────────────────────────────────────
+function updateSidebar() {
+  const sec = document.getElementById('campaignInfoSection');
+  if (!activeCampaign) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  document.getElementById('sidebarCampaignName').textContent = activeCampaign.name;
+  document.getElementById('launchDateInput').value = activeCampaign.launchDate;
+
+  const tasks = activeCampaign.tasks;
+  const dates = tasks.map(t => t.startDate).filter(Boolean).sort();
+  const span = dates.length > 0
+    ? `${daysBetween(dates[0], activeCampaign.launchDate)} days pre-launch runway`
+    : '';
+  document.getElementById('campaignSpan').textContent = span;
+}
+
+function recalcDates() {
+  if (!activeCampaign) return;
+  const newLaunch = document.getElementById('launchDateInput').value;
+  activeCampaign.launchDate = newLaunch;
+  const tpl = TASK_TEMPLATES[activeCampaign.type] || TASK_TEMPLATES.NPD;
+  activeCampaign.tasks.forEach((task, i) => {
+    const t = tpl[i];
+    if (t) {
+      task.startDate = addDays(newLaunch, t.startOff);
+      task.dueDate   = addDays(newLaunch, t.dueOff);
+    }
+  });
+  updateSidebar();
+  renderGantt();
+}
+
+// ─── GANTT RENDER ──────────────────────────────────────────────────────────
+function renderGantt() {
+  const main = document.getElementById('mainArea');
+  if (!activeCampaign) {
+    main.innerHTML = `<div class="empty-state"><div class="big">🚀</div>
+      <p>Create a new campaign to get started.<br>Your team's launch template is ready to go.</p>
+      <br><button class="btn btn-primary" onclick="openNewCampaignModal()">+ New Campaign</button></div>`;
+    return;
+  }
+
+  const tasks = activeCampaign.tasks.filter(t =>
+    activeOwnerFilter === 'all' || t.owner === activeOwnerFilter
+  );
+
+  // Compute date range
+  const allDates = tasks.flatMap(t => [t.startDate, t.dueDate]).filter(Boolean).sort();
+  if (!allDates.length) return;
+  const rangeStart = allDates[0] < addDays(activeCampaign.launchDate, -130)
+    ? allDates[0] : addDays(activeCampaign.launchDate, -130);
+  const rangeEnd   = addDays(activeCampaign.launchDate, 50);
+
+  const totalDays  = daysBetween(rangeStart, rangeEnd);
+  const COL_W      = zoomLevel === 'month' ? 16 : 32;
+  const totalWidth = totalDays * COL_W;
+
+  const today = dateStr(new Date());
+  const todayOff = daysBetween(rangeStart, today);
+
+  // Build month labels
+  let months = [];
+  let cursor = new Date(rangeStart);
+  const end   = new Date(rangeEnd);
+  while (cursor <= end) {
+    const monthStart = dateStr(cursor);
+    const off = daysBetween(rangeStart, monthStart);
+    months.push({ label: cursor.toLocaleString('default', {month:'short', year:'2-digit'}), off });
+    cursor.setMonth(cursor.getMonth() + 1);
+    cursor.setDate(1);
+  }
+
+  // ── HTML ──
+  let html = `
+  <div class="gantt-toolbar">
+    <h2>${activeCampaign.name} <span class="subtitle">Launch: ${activeCampaign.launchDate}</span></h2>
+    <div class="zoom-btns">
+      <button class="zoom-btn ${zoomLevel==='week'?'active':''}" onclick="setZoom('week')">Week</button>
+      <button class="zoom-btn ${zoomLevel==='month'?'active':''}" onclick="setZoom('month')">Month</button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openAddTaskModal()">+ Task</button>
+  </div>
+  <div class="gantt-wrap">
+    <div class="gantt-grid" style="min-width:${totalWidth + parseInt(getComputedStyle(document.documentElement).getPropertyValue('--label-w').trim())}px">`;
+
+  // Labels column
+  html += `<div class="gantt-labels">
+    <div class="label-header">Task</div>`;
+
+  PHASES.forEach(phase => {
+    const phaseTasks = tasks.filter(t => t.phase === phase.id);
+    const collapsed = collapseState[phase.id];
+    html += `<div class="phase-group">
+      <div class="phase-header" onclick="togglePhase('${phase.id}')">
+        <div class="phase-dot" style="background:${phase.color}"></div>
+        ${phase.label}
+        <span class="collapse-icon">${collapsed ? '▶' : '▼'}</span>
+      </div>`;
+    if (!collapsed) {
+      phaseTasks.forEach(task => {
+        const owner = TEAM.find(m => m.name === task.owner);
+        html += `<div class="task-label-row" onclick="openTaskModal('${task.id}')">
+          <div class="status-dot" style="background:${statusColor(task.status)}"></div>
+          <span class="task-name" title="${task.name}">${task.milestone ? '◆ ' : ''}${task.name}</span>
+          ${owner ? `<span class="owner-chip" style="border-color:${owner.color};color:${owner.color}">${owner.initials}</span>` : ''}
+        </div>`;
+      });
+      html += `<div class="add-task-row" onclick="openAddTaskModal('${phase.id}')">+ Add task to ${phase.short}</div>`;
+    }
+    html += `</div>`;
+  });
+  html += `</div>`; // end gantt-labels
+
+  // Chart column
+  html += `<div class="gantt-chart" style="width:${totalWidth}px;position:relative">`;
+
+  // Header with month/day labels
+  html += `<div class="gantt-header-row" style="width:${totalWidth}px;position:relative">`;
+  months.forEach((m, i) => {
+    const nextOff = i + 1 < months.length ? months[i+1].off : totalDays;
+    html += `<div class="gantt-month-label" style="position:absolute;left:${m.off*COL_W}px;width:${(nextOff-m.off)*COL_W}px">${m.label}</div>`;
+  });
+  html += `</div>`;
+
+  // Today line
+  if (todayOff >= 0 && todayOff <= totalDays) {
+    html += `<div class="today-line" style="left:${todayOff * COL_W}px">
+      <div class="today-label" style="left:50%">Today</div></div>`;
+  }
+
+  // Launch day line
+  const launchOff = daysBetween(rangeStart, activeCampaign.launchDate);
+  html += `<div class="today-line" style="left:${launchOff*COL_W}px;background:#8B5CF6;width:2px">
+    <div class="today-label" style="left:50%;background:#8B5CF6">🚀 Launch</div></div>`;
+
+  // Phase rows + task bars
+  PHASES.forEach(phase => {
+    const phaseTasks = tasks.filter(t => t.phase === phase.id);
+    const collapsed = collapseState[phase.id];
+
+    // Phase header row
+    html += `<div class="phase-section-gantt">`;
+    for (let d = 0; d < totalDays; d++) {
+      html += `<div class="phase-cell" style="width:${COL_W}px"></div>`;
+    }
+    html += `</div>`;
+
+    if (!collapsed) {
+      phaseTasks.forEach(task => {
+        html += `<div class="gantt-row" style="position:relative;height:var(--row-h)">`;
+        // Background cells
+        for (let d = 0; d < totalDays; d++) {
+          const dayDate = addDays(rangeStart, d);
+          const dow = new Date(dayDate).getDay();
+          const isWeekend = dow === 0 || dow === 6;
+          const isToday = dayDate === today;
+          html += `<div class="gantt-cell${isWeekend?' weekend':''}${isToday?' today-col':''}" style="width:${COL_W}px"></div>`;
+        }
+        // Task bar
+        if (task.startDate && task.dueDate) {
+          const barStart = daysBetween(rangeStart, task.startDate);
+          const barDur   = Math.max(1, daysBetween(task.startDate, task.dueDate));
+          const barW     = barDur * COL_W;
+          const barL     = barStart * COL_W;
+          const phaseColor = PHASES.find(p => p.id === task.phase)?.color || '#888';
+          const label = barDur > 5 ? task.name : '';
+          if (task.milestone) {
+            html += `<div class="task-bar milestone" style="left:${barL+COL_W/2-10}px;background:var(--yellow)" onclick="openTaskModal('${task.id}')">◆</div>`;
+          } else {
+            html += `<div class="task-bar" style="left:${barL}px;width:${barW}px;background:${phaseColor};opacity:${task.status==='Done'?0.5:1}" onclick="openTaskModal('${task.id}')">${label}</div>`;
+          }
+        }
+        html += `</div>`;
+      });
+      // Add task row
+      html += `<div class="gantt-row" style="height:var(--row-h)">`;
+      for (let d = 0; d < totalDays; d++) html += `<div class="gantt-cell" style="width:${COL_W}px"></div>`;
+      html += `</div>`;
+    }
+  });
+
+  html += `</div></div></div>`; // end chart, grid, wrap
+
+  main.innerHTML = html;
+  updateSidebar();
+}
+
+function setZoom(level) { zoomLevel = level; renderGantt(); }
+function togglePhase(id) { collapseState[id] = !collapseState[id]; renderGantt(); }
+
+// ─── TASK MODAL ────────────────────────────────────────────────────────────
+function populateOwnerDropdown(selectId, selectedOwner) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = '<option value="">Unassigned</option>';
+  TEAM.forEach(m => {
+    sel.innerHTML += `<option value="${m.name}" ${m.name === selectedOwner ? 'selected' : ''}>${m.name}</option>`;
+  });
+}
+
+function openTaskModal(taskId) {
+  if (!activeCampaign) return;
+  const task = activeCampaign.tasks.find(t => t.id === taskId);
+  if (!task) return;
+  editingTaskId = taskId;
+  const phase = PHASES.find(p => p.id === task.phase);
+  document.getElementById('taskModalTitle').textContent = task.name;
+  document.getElementById('taskModalPhase').textContent = phase?.label || '';
+  document.getElementById('tmName').value = task.name;
+  document.getElementById('tmStart').value = task.startDate || '';
+  document.getElementById('tmDue').value = task.dueDate || '';
+  document.getElementById('tmStatus').value = task.status || 'Not Started';
+  document.getElementById('tmChannels').value = task.channels || '';
+  document.getElementById('tmNotes').value = task.notes || '';
+  populateOwnerDropdown('tmOwner', task.owner);
+  document.getElementById('taskModal').classList.add('open');
+}
+
+function openAddTaskModal(phaseId) {
+  if (!activeCampaign) return;
+  editingTaskId = null;
+  document.getElementById('taskModalTitle').textContent = 'New Task';
+  const phase = PHASES.find(p => p.id === phaseId) || PHASES[0];
+  document.getElementById('taskModalPhase').textContent = phase.label;
+  document.getElementById('tmName').value = '';
+  document.getElementById('tmStart').value = activeCampaign.launchDate;
+  document.getElementById('tmDue').value = activeCampaign.launchDate;
+  document.getElementById('tmStatus').value = 'Not Started';
+  document.getElementById('tmChannels').value = '';
+  document.getElementById('tmNotes').value = '';
+  populateOwnerDropdown('tmOwner', '');
+  document.getElementById('taskModal')._addPhase = phaseId || 'strategy';
+  document.getElementById('taskModal').classList.add('open');
+}
+
+function saveTask() {
+  if (!activeCampaign) return;
+  if (editingTaskId) {
+    const task = activeCampaign.tasks.find(t => t.id === editingTaskId);
+    if (task) {
+      task.name      = document.getElementById('tmName').value;
+      task.owner     = document.getElementById('tmOwner').value;
+      task.startDate = document.getElementById('tmStart').value;
+      task.dueDate   = document.getElementById('tmDue').value;
+      task.status    = document.getElementById('tmStatus').value;
+      task.channels  = document.getElementById('tmChannels').value;
+      task.notes     = document.getElementById('tmNotes').value;
+    }
+  } else {
+    const phaseId = document.getElementById('taskModal')._addPhase || 'strategy';
+    activeCampaign.tasks.push({
+      id: uid(), phase: phaseId,
+      name:      document.getElementById('tmName').value,
+      owner:     document.getElementById('tmOwner').value,
+      startDate: document.getElementById('tmStart').value,
+      dueDate:   document.getElementById('tmDue').value,
+      status:    document.getElementById('tmStatus').value,
+      channels:  document.getElementById('tmChannels').value,
+      notes:     document.getElementById('tmNotes').value,
+      startOff: 0, dueOff: 0,
+    });
+  }
+  closeModal('taskModal');
+  renderGantt();
+}
+
+function deleteTask() {
+  if (!editingTaskId || !activeCampaign) return;
+  const modal = document.getElementById('taskModal');
+  const existing = modal.querySelector('.delete-confirm');
+  if (existing) {
+    // Second click — confirmed, do the delete
+    activeCampaign.tasks = activeCampaign.tasks.filter(t => t.id !== editingTaskId);
+    closeModal('taskModal');
+    renderGantt();
+  } else {
+    // First click — show inline confirmation
+    const actions = modal.querySelector('.modal-actions');
+    const confirmRow = document.createElement('div');
+    confirmRow.className = 'delete-confirm';
+    confirmRow.style.cssText = 'background:#fef2f2;border:1px solid #fca5a5;border-radius:4px;padding:10px 14px;font-size:11px;color:#991b1b;margin-bottom:12px;';
+    confirmRow.innerHTML = 'Are you sure? Click <strong>Delete</strong> again to confirm.';
+    actions.parentNode.insertBefore(confirmRow, actions);
+    modal.querySelector('.btn-danger').textContent = 'Yes, delete';
+  }
+}
+
+// ─── CAMPAIGN SELECT ───────────────────────────────────────────────────────
+document.getElementById('campaignSelect').addEventListener('change', function() {
+  const id = this.value;
+  activeCampaign = campaigns.find(c => c.id === id) || null;
+  updateSidebar();
+  renderGantt();
+});
+
+// ─── EXPORT ────────────────────────────────────────────────────────────────
+function exportCSV() {
+  if (!activeCampaign) return;
+  const rows = [['Task','Phase','Owner','Start Date','Due Date','Status','Channels','Notes']];
+  activeCampaign.tasks.forEach(t => {
+    const phase = PHASES.find(p => p.id === t.phase)?.label || t.phase;
+    rows.push([t.name, phase, t.owner||'', t.startDate||'', t.dueDate||'', t.status||'', t.channels||'', t.notes||'']);
+  });
+  const csv = rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\n');
+  // Try native download (works on GitHub Pages)
+  try {
+    const a = document.createElement('a');
+    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+    a.download = activeCampaign.name.replace(/\s+/g,'_') + '_schedule.csv';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  } catch(e) {}
+  // Always show modal with copy fallback (works in Coda embed)
+  document.getElementById('exportCsvContent').value = csv;
+  document.getElementById('exportModalName').textContent = activeCampaign.name;
+  document.getElementById('exportModal').classList.add('open');
+}
+function copyCSV() {
+  const ta = document.getElementById('exportCsvContent');
+  ta.select();
+  try {
+    document.execCommand('copy');
+    const btn = document.getElementById('copyCsvBtn');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = 'Copy to clipboard'; }, 2000);
+  } catch(e) { alert('Select all text in the box and copy manually.'); }
+}
+
+// ─── CLOSE MODALS ON OVERLAY CLICK ────────────────────────────────────────
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+buildTeamList();
+renderGantt();
+</script>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal" style="width:600px">
+    <h3>Export CSV</h3>
+    <p class="modal-sub" id="exportModalName"></p>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:10px;">On GitHub Pages, your file should download automatically. If not, copy the CSV below and paste into a .csv file.</p>
+    <textarea id="exportCsvContent" rows="10" style="width:100%;font-size:10px;font-family:monospace;background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:8px;resize:vertical;" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('exportModal')">Close</button>
+      <button class="btn btn-primary" id="copyCsvBtn" onclick="copyCSV()">Copy to clipboard</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
