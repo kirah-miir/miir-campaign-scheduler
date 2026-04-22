@@ -571,22 +571,14 @@ TASK_TEMPLATES.LTO = TASK_TEMPLATES.NPD.map(t => ({...t}));
 TASK_TEMPLATES.Seasonal = TASK_TEMPLATES.NPD.map(t => ({...t}));
 TASK_TEMPLATES.Collab = TASK_TEMPLATES.NPD.map(t => ({...t}));
 
-// ─── STATE ─────────────────────────────────────────────────────────────────
-let campaigns = [];
-let activeCampaign = null;
-let activeOwnerFilter = 'all';
-let editingTaskId = null;
-let collapseState = {}; // phaseId → bool
-let zoomLevel = 'week'; // week | month
-
 // ─── UTILS ─────────────────────────────────────────────────────────────────
 function dateStr(d) {
   if (!d) return '';
   const dt = d instanceof Date ? d : new Date(d);
   return dt.toISOString().split('T')[0];
 }
-function addDays(dateStr, days) {
-  const d = new Date(dateStr);
+function addDays(ds, days) {
+  const d = new Date(ds);
   d.setDate(d.getDate() + days);
   return dateStr(d);
 }
@@ -594,6 +586,14 @@ function daysBetween(a, b) {
   return Math.round((new Date(b) - new Date(a)) / 86400000);
 }
 function uid() { return Math.random().toString(36).slice(2, 9); }
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let campaigns = [];
+let activeCampaign = null;
+let activeOwnerFilter = 'all';
+let editingTaskId = null;
+let collapseState = {}; // phaseId → bool
+let zoomLevel = 'week'; // week | month
 
 const STATUS_COLORS = {
   'Done':        '#22c55e',
